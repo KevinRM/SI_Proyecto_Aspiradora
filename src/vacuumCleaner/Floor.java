@@ -1,8 +1,8 @@
 /**
- * Proyecto de simulación de una aspiradora robot que se mueve de forma
- * autónoma para limpiar habitaciones
+ * Proyecto de simulaciï¿½n de una aspiradora robot que se mueve de forma
+ * autï¿½noma para limpiar habitaciones
  */
-package proyecto_aspiradora;
+package vacuumCleaner;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -10,12 +10,12 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 
 /**
- * Clase Floor que será un JPanel representando el suelo por donde se
- * movera la aspiradora, contendra obstaculos móviles y fijos
+ * Clase Floor que serï¿½ un JPanel representando el suelo por donde se
+ * movera la aspiradora, contendra obstaculos mï¿½viles y fijos
  * 
  * @author Kevin Miguel Rivero Martin
- * @author Teguayco Gutiérrez González
- * @author Rubén Labrador Páez
+ * @author Teguayco Gutiï¿½rrez Gonzï¿½lez
+ * @author Rubï¿½n Labrador Pï¿½ez
  */
 public class Floor extends JPanel {
 	private Color COLOR_BACKGROUND = Color.GRAY;
@@ -37,5 +37,24 @@ public class Floor extends JPanel {
 				add(cells[i][j]);
 			}
 		}
+	}
+	
+	public void setVacuum(int row, int column) {
+		cells[row][column].setVacuumHere();
+	}
+	
+	// Get cells of the floor
+	public FloorCell[][] getCells() {
+		return cells;
+	}
+	
+	// Get rows of the floor
+	public int getNumberRows() {
+		return ROWS;
+	}
+	
+	// Get columns of the floor
+	public int getNumberColumns() {
+		return COLUMNS;
 	}
 }

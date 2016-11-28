@@ -1,8 +1,8 @@
 /**
- * Proyecto de simulación de una aspiradora robot que se mueve de forma
- * autónoma para limpiar habitaciones
+ * Proyecto de simulaciï¿½n de una aspiradora robot que se mueve de forma
+ * autï¿½noma para limpiar habitaciones
  */
-package proyecto_aspiradora;
+package vacuumCleaner;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
@@ -12,18 +12,19 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 
 /**
- * Clase JFrame que será la ventana principal de la aplicación
+ * Clase JFrame que serï¿½ la ventana principal de la aplicaciï¿½n
  * 
  * @author Kevin Miguel Rivero Martin
- * @author Teguayco Gutiérrez González
- * @author Rubén Labrador Páez
+ * @author Teguayco Gutiï¿½rrez Gonzï¿½lez
+ * @author Rubï¿½n Labrador Pï¿½ez
  */
 public class Window extends JFrame {
 	private int WIDTH = 1000;						// Width of the frame in pixels
-	private int HEIGHT = 800;						// height of the frame in pixels
+	private int HEIGHT = 700;						// height of the frame in pixels
 	private Color COLOR_BACKGROUND = Color.BLACK;	// Color of the frame background
-	private Menu menu = new Menu();
 	private Floor floor = new Floor();
+	private Menu menu = new Menu(floor);
+	private Vacuum vacuum = new Vacuum(floor);
 	
 	Window() {
 		buildWindow();

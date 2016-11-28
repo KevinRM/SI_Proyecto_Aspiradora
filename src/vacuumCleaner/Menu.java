@@ -1,35 +1,42 @@
 /**
- * Proyecto de simulación de una aspiradora robot que se mueve de forma
- * autónoma para limpiar habitaciones
+ * Proyecto de simulaciï¿½n de una aspiradora robot que se mueve de forma
+ * autï¿½noma para limpiar habitaciones
  */
-package proyecto_aspiradora;
+package vacuumCleaner;
 
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 
 /**
- * Clase Menu que será el menú de la aplicación
+ * Clase Menu que serï¿½ el menï¿½ de la aplicaciï¿½n
  * 
  * @author Kevin Miguel Rivero Martin
- * @author Teguayco Gutiérrez González
- * @author Rubén Labrador Páez
+ * @author Teguayco Gutiï¿½rrez Gonzï¿½lez
+ * @author Rubï¿½n Labrador Pï¿½ez
  */
 public class Menu extends JPanel {
+	private Floor floor;			// Floor of the application
+	private MouseListener eventMouseToRemove;	// Reference to mouseListener for remove it
 	private Color COLOR_BACKGROUND = Color.LIGHT_GRAY;
 	private JButton startButton = new JButton("Empezar");
 	private JButton stopButton = new JButton("Parar");
 	private JButton restartButton = new JButton("Reiniciar");
 	private JButton setVacuum = new JButton("Poner aspiradora");
-	private JButton setMobilObstacle = new JButton("Poner obstáculo móvil");
-	private JButton setStillObstacle = new JButton("Poner obstáculo inmóvil");
+	private JButton setMobilObstacle = new JButton("Poner obstï¿½culo mï¿½vil");
+	private JButton setStillObstacle = new JButton("Poner obstï¿½culo inmï¿½vil");
 	
-	Menu() {
+	Menu(Floor floor) {
+		this.floor = floor;
 		setBackground(COLOR_BACKGROUND);
 		setLayout(new GridBagLayout());
 		
@@ -83,10 +90,45 @@ public class Menu extends JPanel {
 		constraints.gridheight = 1;		// Fill 1 row
 		add(restartButton, constraints);
 		
-		
+		initializeButtons();
+	}
+	
+	private void initializeButtons() {
+		// Button set Vacuum
+		setVacuum.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				// Create the mouse event
+				eventMouseToRemove = new MouseListener() {
+					public void mouseClicked(MouseEvent arg0) {}
+					public void mouseEntered(MouseEvent arg0) {}
+					public void mouseExited(MouseEvent arg0) {}
+					public void mousePressed(MouseEvent arg0) {}
+					public void mouseReleased(MouseEvent arg0) {
+						// Set Vacuum in the cell
+						FloorCell cell = (FloorCell)arg0.getSource();
+						cell.setVacuumHere();
+						
+						// Remove the listener of the cells
+						FloorCell[][] cells = floor.getCells();
+						for (int i = 0; i < floor.getNumberRows(); i++) {
+							for (int j = 0; j < floor.getNumberColumns(); j++) {
+								cells[i][j].removeMouseListener(eventMouseToRemove);
+							}
+						}
+						// Disable button setVacuum
+						setVacuum.setEnabled(false);
+					}
+				};
 				
-		
-				
-		
+				// Add mouseListener to cells
+				FloorCell[][] cells = floor.getCells();
+				for (int i = 0; i < floor.getNumberRows(); i++) {
+					for (int j = 0; j < floor.getNumberColumns(); j++) {
+						cells[i][j].addMouseListener(eventMouseToRemove);
+					}
+				}
+			}
+		});
 	}
 }
