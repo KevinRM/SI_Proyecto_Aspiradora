@@ -21,8 +21,8 @@ public class Floor extends JPanel {
 	private Color COLOR_BACKGROUND = Color.GRAY;
 	private int HGAP = 1;			// Horizontal gap between components
 	private int VGAP = 1;			// Vertical gap between components
-	private int ROWS = 40;			// Rows of the floor
-	private int COLUMNS = 40;		// Columns of the floor
+	private int ROWS = 20;			// Rows of the floor
+	private int COLUMNS = 20;		// Columns of the floor
 	private FloorCell cells[][];
 	
 	Floor() {
