@@ -23,8 +23,8 @@ public class Window extends JFrame {
 	private int HEIGHT = 700;						// height of the frame in pixels
 	private Color COLOR_BACKGROUND = Color.BLACK;	// Color of the frame background
 	private Floor floor = new Floor();
-	private Menu menu = new Menu(floor);
 	private Vacuum vacuum = new Vacuum(floor);
+	private Menu menu = new Menu(floor, vacuum);
 	
 	Window() {
 		buildWindow();
@@ -37,7 +37,7 @@ public class Window extends JFrame {
 		constraints.gridwidth = 1;		// Fill 1 column
 		constraints.gridheight = 1;		// Fill 1 row
 		constraints.weighty = 1;		// Row 0 should stretch
-		constraints.weightx = 0.5;		// Column 0 should stretch
+		constraints.weightx = 0.1;		// Column 0 should stretch
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 5, 5, 0);	// Padding of element
 		add(menu, constraints);
@@ -50,7 +50,7 @@ public class Window extends JFrame {
 		constraints.gridwidth = 1;		// Fill 1 column
 		constraints.gridheight = 1;		// Fill 1 row
 		constraints.weighty = 1;		// Row 0 should stretch
-		constraints.weightx = 0.5;		// Column 0 should stretch
+		constraints.weightx = 1;		// Column 0 should stretch
 		constraints.fill = GridBagConstraints.BOTH;
 		constraints.insets = new Insets(5, 0, 5, 5);	// Padding of element
 		add(floor, constraints);

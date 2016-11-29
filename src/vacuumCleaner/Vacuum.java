@@ -4,6 +4,11 @@
  */
 package vacuumCleaner;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
+
 /**
  * Clase Vacuum que representa la aspiradora que se movera y limpiará el suelo
  * 
@@ -12,13 +17,39 @@ package vacuumCleaner;
  * @author Rub�n Labrador P�ez
  */
 public class Vacuum {
-	private Floor floor;		// Floor where the vacuum move
+	private Floor floor;			// Floor where the vacuum move
+	private static int xPos = 0;
+	private static int yPos = 0;
+	private Timer timerAlgorithm;
+	private int TIME_TO_TIMER = 1000;	// In ms
 	
 	Vacuum(Floor floor) {
 		this.floor = floor;		// Get the floor
+		algorithClean();
 	}
 	
-	private void setVacuum(int row, int column) {
-		floor.setVacuum(row, column);
+	// Get position in the array to paint vacuum during the algorithm
+	public static void setPosition(int row, int column) {
+		xPos = row;
+		yPos = column;
+	}
+	
+	private void algorithClean() {
+		timerAlgorithm = new Timer(TIME_TO_TIMER, new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				// getSensorParameters para obtener si es obstaculo o limpia de las celdas de alrededor
+				// floor.setVacuum(i, j) para poner la aspiradora en una determinada celda
+			}
+		});
+	}
+	
+	// Start algorithm
+	public void startClean() {
+		timerAlgorithm.start();
+	}
+	
+	// Stop algorithm
+	public void stopClean() {
+		timerAlgorithm.stop();
 	}
 }

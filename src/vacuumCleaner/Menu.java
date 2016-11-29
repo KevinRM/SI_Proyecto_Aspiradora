@@ -26,6 +26,7 @@ import javax.swing.JPanel;
  */
 public class Menu extends JPanel {
 	private Floor floor;			// Floor of the application
+	private Vacuum vacuum;
 	private MouseListener eventMouseToRemove;	// Reference to mouseListener for remove it
 	private Color COLOR_BACKGROUND = Color.LIGHT_GRAY;
 	private JButton startButton = new JButton("Empezar");
@@ -35,8 +36,9 @@ public class Menu extends JPanel {
 	private JButton setMobilObstacle = new JButton("Poner obst�culo m�vil");
 	private JButton setStillObstacle = new JButton("Poner obst�culo inm�vil");
 	
-	Menu(Floor floor) {
+	Menu(Floor floor, Vacuum vacuum) {
 		this.floor = floor;
+		this.vacuum = vacuum;
 		setBackground(COLOR_BACKGROUND);
 		setLayout(new GridBagLayout());
 		
@@ -108,6 +110,7 @@ public class Menu extends JPanel {
 						// Set Vacuum in the cell
 						FloorCell cell = (FloorCell)arg0.getSource();
 						cell.setVacuumHere();
+						Vacuum.setPosition(cell.getRow(), cell.getColumn());
 						
 						// Remove the listener of the cells
 						FloorCell[][] cells = floor.getCells();
@@ -128,6 +131,20 @@ public class Menu extends JPanel {
 						cells[i][j].addMouseListener(eventMouseToRemove);
 					}
 				}
+			}
+		});
+		
+		// Button start
+		startButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				vacuum.startClean();
+			}
+		});
+		
+		// Button stop
+		stopButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				vacuum.stopClean();
 			}
 		});
 	}

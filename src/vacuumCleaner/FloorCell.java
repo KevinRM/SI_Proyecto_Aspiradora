@@ -4,6 +4,7 @@
  */
 package vacuumCleaner;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -19,15 +20,25 @@ import javax.swing.JPanel;
  * @author Rub�n Labrador P�ez
  */
 public class FloorCell extends JPanel {
-	//private int THICKNESS_BORDER = 1;
-	//private Color COLOR_BORDER = Color.GRAY;
-	private Color DIRTY_COLOR = Color.decode("#B45F04");		// Default color of the cell
-	private Color CLEAN_COLOR = Color.WHITE;	// Color when the cell is clean
-	private boolean paintVacuum = false;		// True when the vacuum is in the cell and need paint it
+	private int row;		// Row to know index in vacuum
+	private int column;		// Column to know index in vacuum
+	private Color DIRTY_COLOR = Color.decode("#B45F04");	// Default color of the cell
+	private Color CLEAN_COLOR = Color.WHITE;				// Color when the cell is clean
+	private Color WALL_COLOR = Color.BLACK;					// Color of the wall
+	private boolean paintVacuum = false;					// True when the vacuum is in the cell and need paint it
+	private boolean isObstacle = false;
+	private boolean isClean = false;
 	
-	FloorCell() {
-		setBackground(DIRTY_COLOR);
-		//setBorder(BorderFactory.createLineBorder(COLOR_BORDER, THICKNESS_BORDER));
+	FloorCell(int row, int column, String is) {
+		this.row = row;
+		this.column = column;
+		
+		if (is != "wall") {
+			setBackground(DIRTY_COLOR);
+		} else {
+			setBackground(WALL_COLOR);
+			isObstacle = true;
+		}
 	}
 	
 	public void setCleanCell() {
@@ -38,6 +49,12 @@ public class FloorCell extends JPanel {
 	public void setVacuumHere() {
 		paintVacuum = true;
 		this.repaint();
+	}
+	
+	// Return the parameter of sensor [clean, obstacle]
+	public boolean[] getSensorParameters() {
+		boolean[] parameters = {isClean, isObstacle};
+		return parameters;
 	}
 
 	// Deactivate the boolean that paint the vacuum and repaint cell
@@ -51,8 +68,19 @@ public class FloorCell extends JPanel {
 		super.paintComponent(g);
 		if (paintVacuum) {
 			Graphics2D g2d = (Graphics2D) g;
-			
+			g2d.setColor(Color.GREEN);
 			g2d.fillOval(0, 0, this.getWidth(), this.getHeight());
+			g2d.setColor(Color.RED);
+			g2d.setStroke(new BasicStroke(2));
+			g2d.drawLine(0, getHeight()/2, (getWidth()/2), (getHeight()/2));
 		}
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getColumn() {
+		return column;
 	}
 }

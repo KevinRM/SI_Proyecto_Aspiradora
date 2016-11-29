@@ -21,8 +21,8 @@ public class Floor extends JPanel {
 	private Color COLOR_BACKGROUND = Color.GRAY;
 	private int HGAP = 1;			// Horizontal gap between components
 	private int VGAP = 1;			// Vertical gap between components
-	private int ROWS = 65;			// Rows of the floor
-	private int COLUMNS = 65;		// Columns of the floor
+	private int ROWS = 40;			// Rows of the floor
+	private int COLUMNS = 40;		// Columns of the floor
 	private FloorCell cells[][];
 	
 	Floor() {
@@ -33,14 +33,24 @@ public class Floor extends JPanel {
 		cells = new FloorCell[ROWS][COLUMNS];
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < COLUMNS; j++) {
-				cells[i][j] = new FloorCell();
-				add(cells[i][j]);
+				if (j == 0 || j == (COLUMNS - 1) || i == 0 || (i == ROWS - 1)) {	// Paint wall
+					cells[i][j] = new FloorCell(i, j, "wall");
+					add(cells[i][j]);
+				} else {
+					cells[i][j] = new FloorCell(i, j, "nowall");
+					add(cells[i][j]);
+				}
 			}
 		}
 	}
 	
 	public void setVacuum(int row, int column) {
 		cells[row][column].setVacuumHere();
+	}
+	
+	// Return the parameter of sensor [clean, obstacle]
+	public boolean[] getSensorParameters(int row, int column) {
+		return cells[row][column].getSensorParameters();
 	}
 	
 	// Get cells of the floor
