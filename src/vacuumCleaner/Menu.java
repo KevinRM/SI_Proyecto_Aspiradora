@@ -109,7 +109,7 @@ public class Menu extends JPanel {
 					public void mouseReleased(MouseEvent arg0) {
 						// Set Vacuum in the cell
 						FloorCell cell = (FloorCell)arg0.getSource();
-						cell.setVacuumHere();
+						floor.setVacuum(cell.getRow(), cell.getColumn());
 						Vacuum.setPosition(cell.getRow(), cell.getColumn());
 						
 						// Remove the listener of the cells
@@ -121,9 +121,46 @@ public class Menu extends JPanel {
 						}
 						// Disable button setVacuum
 						setVacuum.setEnabled(false);
+						// Enable button start
+						startButton.setEnabled(true);
 					}
 				};
 				
+				// Add mouseListener to cells
+				FloorCell[][] cells = floor.getCells();
+				for (int i = 0; i < floor.getNumberRows(); i++) {
+					for (int j = 0; j < floor.getNumberColumns(); j++) {
+						cells[i][j].addMouseListener(eventMouseToRemove);
+					}
+				}
+			}
+		});
+		
+		// Button set Still Obstacle
+		setStillObstacle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+
+				// Create the mouse event
+				eventMouseToRemove = new MouseListener() {
+					public void mouseClicked(MouseEvent arg0) {}
+					public void mouseEntered(MouseEvent arg0) {}
+					public void mouseExited(MouseEvent arg0) {}
+					public void mousePressed(MouseEvent arg0) {}
+					public void mouseReleased(MouseEvent arg0) {
+						// Set Vacuum in the cell
+						FloorCell cell = (FloorCell) arg0.getSource();
+						cell.setObstacleHere();
+
+						// Remove the listener of the cells
+						FloorCell[][] cells = floor.getCells();
+						for (int i = 0; i < floor.getNumberRows(); i++) {
+							for (int j = 0; j < floor.getNumberColumns(); j++) {
+								cells[i][j].removeMouseListener(eventMouseToRemove);
+							}
+						}
+					}
+				};
+
 				// Add mouseListener to cells
 				FloorCell[][] cells = floor.getCells();
 				for (int i = 0; i < floor.getNumberRows(); i++) {
@@ -138,8 +175,10 @@ public class Menu extends JPanel {
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				vacuum.startClean();
+				stopButton.setEnabled(true);
 			}
 		});
+		startButton.setEnabled(false);
 		
 		// Button stop
 		stopButton.addActionListener(new ActionListener() {
@@ -147,5 +186,6 @@ public class Menu extends JPanel {
 				vacuum.stopClean();
 			}
 		});
+		stopButton.setEnabled(false);
 	}
 }

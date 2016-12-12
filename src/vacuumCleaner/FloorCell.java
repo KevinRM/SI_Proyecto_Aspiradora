@@ -25,14 +25,14 @@ public class FloorCell extends JPanel {
 	private Color DIRTY_COLOR = Color.decode("#B45F04");	// Default color of the cell
 	private Color CLEAN_COLOR = Color.WHITE;				// Color when the cell is clean
 	private Color WALL_COLOR = Color.BLACK;					// Color of the wall
-	private boolean paintVacuum = false;					// True when the vacuum is in the cell and need paint it
+	private boolean isVacuum = false;					// True when the vacuum is in the cell and need paint it
 	private boolean isObstacle = false;
-	private boolean isClean = false;
-	
+	//private boolean isClean = false;
+
 	FloorCell(int row, int column, String is) {
 		this.row = row;
 		this.column = column;
-		
+
 		if (is != "wall") {
 			setBackground(DIRTY_COLOR);
 		} else {
@@ -40,33 +40,49 @@ public class FloorCell extends JPanel {
 			isObstacle = true;
 		}
 	}
-	
+
 	public void setCleanCell() {
 		setBackground(CLEAN_COLOR);
 	}
-	
+
 	// Active the boolean that paint the vacuum
 	public void setVacuumHere() {
-		paintVacuum = true;
+		isVacuum = true;
 		this.repaint();
-	}
-	
-	// Return the parameter of sensor [clean, obstacle]
-	public boolean[] getSensorParameters() {
-		boolean[] parameters = {isClean, isObstacle};
-		return parameters;
 	}
 
 	// Deactivate the boolean that paint the vacuum and repaint cell
 	public void removeVacuumHere() {
-		paintVacuum = false;
+		isVacuum = false;
 		setCleanCell();
-		this.repaint();
 	}
 	
+	// Get if the cell has the vacuum
+	public boolean haveVacuum() {
+		return isVacuum;
+	}
+
+	// Active the boolean that paint obstacle
+	public void setObstacleHere() {
+		setBackground(WALL_COLOR);
+		isObstacle = true;
+	}
+	
+	// Get if is an obstacle
+	public boolean isObstacle() {
+		return isObstacle;
+	}
+
+	// Return the parameter of sensor [clean, obstacle]
+	public boolean/*boolean[]*/ getSensorParameters() {
+		//boolean[] parameters = {isClean, isObstacle};
+		//return parameters;
+		return isObstacle;
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (paintVacuum) {
+		if (isVacuum) {
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setColor(Color.GREEN);
 			g2d.fillOval(0, 0, this.getWidth(), this.getHeight());
@@ -75,11 +91,11 @@ public class FloorCell extends JPanel {
 			g2d.drawLine(0, getHeight()/2, (getWidth()/2), (getHeight()/2));
 		}
 	}
-	
+
 	public int getRow() {
 		return row;
 	}
-	
+
 	public int getColumn() {
 		return column;
 	}

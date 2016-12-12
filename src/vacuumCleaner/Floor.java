@@ -6,6 +6,7 @@ package vacuumCleaner;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -24,11 +25,11 @@ public class Floor extends JPanel {
 	private int ROWS = 20;			// Rows of the floor
 	private int COLUMNS = 20;		// Columns of the floor
 	private FloorCell cells[][];
-	
+
 	Floor() {
 		setBackground(COLOR_BACKGROUND);
 		setLayout(new GridLayout(ROWS, COLUMNS, HGAP, VGAP));
-		
+
 		// Initializing floor cells
 		cells = new FloorCell[ROWS][COLUMNS];
 		for (int i = 0; i < ROWS; i++) {
@@ -43,26 +44,27 @@ public class Floor extends JPanel {
 			}
 		}
 	}
-	
+
 	public void setVacuum(int row, int column) {
 		cells[row][column].setVacuumHere();
 	}
-	
+
 	// Return the parameter of sensor [clean, obstacle]
-	public boolean[] getSensorParameters(int row, int column) {
+	public boolean/*boolean[]*/ getSensorParameters(int row, int column) {
+		//return cells[row][column].getSensorParameters();
 		return cells[row][column].getSensorParameters();
 	}
-	
+
 	// Get cells of the floor
 	public FloorCell[][] getCells() {
 		return cells;
 	}
-	
+
 	// Get rows of the floor
 	public int getNumberRows() {
 		return ROWS;
 	}
-	
+
 	// Get columns of the floor
 	public int getNumberColumns() {
 		return COLUMNS;
