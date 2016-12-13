@@ -1,6 +1,6 @@
 /**
- * Proyecto de simulaci�n de una aspiradora robot que se mueve de forma
- * aut�noma para limpiar habitaciones
+ * Proyecto de simulaciï¿½n de una aspiradora robot que se mueve de forma
+ * autï¿½noma para limpiar habitaciones
  */
 package vacuumCleaner;
 
@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 /**
- * Clase Vacuum que representa la aspiradora que se movera y limpiará el suelo
+ * Clase Vacuum que representa la aspiradora que se movera y limpiarÃ¡ el suelo
  * 
  * @author Kevin Miguel Rivero Martin
- * @author Teguayco Guti�rrez Gonz�lez
- * @author Rub�n Labrador P�ez
+ * @author Teguayco Gutiï¿½rrez Gonzï¿½lez
+ * @author Rubï¿½n Labrador Pï¿½ez
  */
 public class Vacuum {
-	private Floor floor;			// Floor where the vacuum move
+	private Floor floor;			// Floor where the vacuum moves
 	private static int rowPos = 0;
 	private static int colPos = 0;
 	private Timer timerAlgorithm;
@@ -47,195 +47,81 @@ public class Vacuum {
 		});
 	}
 
-	// Return the parameter of sensor [clean, obstacle]
+	
 	public void getSensorParameters() {
-		boolean exit = false;
-		ArrayList<Integer> cellsRowCanMove = new ArrayList<Integer>();
-		ArrayList<Integer> cellsColumnCanMove = new ArrayList<Integer>();
-		int posRowTemp = rowPos;
-		int posColTemp = colPos;
-		int colLimitMin = Integer.MIN_VALUE;
-		int colLimitMax = Integer.MAX_VALUE;
-		//int rowLimitMin = Integer.MIN_VALUE;
-		//int rowLimitMax = Integer.MAX_VALUE;
+		ArrayList<Integer> xEmptyCells = new ArrayList<Integer>();
+		ArrayList<Integer> yEmptyCells = new ArrayList<Integer>();
 
-		// Left
-		/*while(!exit) {
-			posColTemp--;
-			if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-				cellsRowCanMove.add(posRowTemp);
-				cellsColumnCanMove.add(posColTemp);
-			} else {
-				colLimitMin = posColTemp;	// Set minimum column
-				posColTemp = colPos;	// Reset position
-				exit = true;
-			}
-		}
-		exit = false;
-		// Right
-		while(!exit) {
-			posColTemp++;
-			if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-				cellsRowCanMove.add(posRowTemp);
-				cellsColumnCanMove.add(posColTemp);
-			} else {
-				colLimitMax = posColTemp;	// Set minimum column
-				posColTemp = colPos;	// Reset position
-				exit = true;
-			}
-		}
-		exit = false;
-		// Down
-		while(!exit) {
-			posRowTemp++;
-			if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-				cellsRowCanMove.add(posRowTemp);
-				cellsColumnCanMove.add(posColTemp);
-			} else {
-				rowLimitMax = posRowTemp;	// Set minimum column
-				posRowTemp = rowPos;	// Reset position
-				exit = true;
-			}
-		}
-		exit = false;
-		// Up
-		while(!exit) {
-			posRowTemp--;
-			if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-				cellsRowCanMove.add(posRowTemp);
-				cellsColumnCanMove.add(posColTemp);
-			} else {
-				rowLimitMin = posRowTemp;	// Set minimum column
-				posRowTemp = rowPos;	// Reset position
-				exit = true;
-			}
-		}
-		exit = false;*/
-		//Down - Left - Right
-		while(!exit) {
-			if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-				cellsRowCanMove.add(posRowTemp);
-				cellsColumnCanMove.add(posColTemp);
-
-				boolean exitColumns = false;
-				while(!exitColumns && posColTemp > colLimitMin) {
-					posColTemp--;
-					if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-						cellsRowCanMove.add(posRowTemp);
-						cellsColumnCanMove.add(posColTemp);
-					} else {
-						exitColumns = true;
+		// Centros del radio de sensado
+		int xCenter = getColPos();
+		int yCenter = getRowPos();
+		
+		// El radio del sensado puede ser variable
+		int sensorRadius = 7;
+		
+		// Realizar un sensado en redondo
+		for (int x = 0; x < getFloor().getNumberColumns(); x++) {
+			for (int y = 0; y < getFloor().getNumberRows(); y++) {
+				if ((x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter) < sensorRadius * sensorRadius) {
+					// Si no es una posición obstaculizada
+					if (!getFloor().obstaculizedCell(y, x)) {
+						xEmptyCells.add(x);
+						yEmptyCells.add(y);
 					}
 				}
-				colLimitMin = posColTemp;
-				posColTemp = colPos;
-
-				exitColumns = false;
-				while(!exitColumns && posColTemp < colLimitMax) {
-					posColTemp++;
-					if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-						cellsRowCanMove.add(posRowTemp);
-						cellsColumnCanMove.add(posColTemp);
-					} else {
-						exitColumns = true;
-					}
-				}
-				colLimitMax = posColTemp;
-				posColTemp = colPos;
-
-			} else {
-				//rowLimitMax = posRowTemp;	// Set minimum column
-				posRowTemp = rowPos;	// Reset position
-				exit = true;
 			}
-			posRowTemp++;
 		}
-		//Up - Left - Right
-		colLimitMin = Integer.MIN_VALUE;
-		colLimitMax = Integer.MAX_VALUE;
-		exit = false;
-		while(!exit) {
-			if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-				cellsRowCanMove.add(posRowTemp);
-				cellsColumnCanMove.add(posColTemp);
-
-				boolean exitColumns = false;
-				while(!exitColumns && posColTemp > colLimitMin) {
-					posColTemp--;
-					if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-						cellsRowCanMove.add(posRowTemp);
-						cellsColumnCanMove.add(posColTemp);
-					} else {
-						exitColumns = true;
-					}
-				}
-				colLimitMin = posColTemp;
-				posColTemp = colPos;
-
-				exitColumns = false;
-				while(!exitColumns && posColTemp < colLimitMax) {
-					posColTemp++;
-					if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-						cellsRowCanMove.add(posRowTemp);
-						cellsColumnCanMove.add(posColTemp);
-					} else {
-						exitColumns = true;
-					}
-				}
-				colLimitMax = posColTemp;
-				posColTemp = colPos;
-
-			} else {
-				//rowLimitMax = posRowTemp;	// Set minimum column
-				posRowTemp = rowPos;	// Reset position
-				exit = true;
-			}
-			posRowTemp--;
-		}
-		//Up - Left - Right
-		/*posRowTemp = rowPos;	// Reset position row
-		while(posRowTemp > rowLimitMin) {
-			posRowTemp--;
-			boolean exitColumns = false;
-			while(!exitColumns && posColTemp > colLimitMin) {
-				posColTemp--;
-				if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-					cellsRowCanMove.add(posRowTemp);
-					cellsColumnCanMove.add(posColTemp);
-				} else {
-					exitColumns = true;
-				}
-			}
-			colLimitMin = posColTemp;
-			posColTemp = colPos;
-
-			exitColumns = false;
-			while(!exitColumns && posColTemp < colLimitMax) {
-				posColTemp++;
-				if (!floor.getSensorParameters(posRowTemp, posColTemp)) {
-					cellsRowCanMove.add(posRowTemp);
-					cellsColumnCanMove.add(posColTemp);
-				} else {
-					exitColumns = true;
-				}
-			}
-			colLimitMax = posColTemp;
-			posColTemp = colPos;
-		}*/
-
-		for (int i = 0; i < cellsRowCanMove.size(); i++) {
-			floor.getCells()[cellsRowCanMove.get(i)][cellsColumnCanMove.get(i)].setCleanCell();
+		
+		// Pintar las celdas que ve el sensor
+		for (int i = 0; i < xEmptyCells.size(); i++) {
+			floor.getCells()[yEmptyCells.get(i)][xEmptyCells.get(i)].setCleanCell();
 		}
 	}
 
-	// Start algorithm
+	/**
+	 * Execute the algorithm for cleaning the room
+	 */
 	public void startClean() {
 		//timerAlgorithm.start();
 		getSensorParameters();
 	}
 
-	// Stop algorithm
+	/**
+	 * Stop the algorithm for cleaning the room
+	 */
 	public void stopClean() {
 		timerAlgorithm.stop();
+	}
+
+	public Floor getFloor() {
+		return floor;
+	}
+
+	public void setFloor(Floor floor) {
+		this.floor = floor;
+	}
+
+	public static int getRowPos() {
+		return rowPos;
+	}
+
+	public static void setRowPos(int rowPos) {
+		Vacuum.rowPos = rowPos;
+	}
+
+	public static int getColPos() {
+		return colPos;
+	}
+
+	public static void setColPos(int colPos) {
+		Vacuum.colPos = colPos;
+	}
+
+	public Timer getTimerAlgorithm() {
+		return timerAlgorithm;
+	}
+
+	public void setTimerAlgorithm(Timer timerAlgorithm) {
+		this.timerAlgorithm = timerAlgorithm;
 	}
 }

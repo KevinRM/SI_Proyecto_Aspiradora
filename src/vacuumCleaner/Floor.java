@@ -49,6 +49,19 @@ public class Floor extends JPanel {
 		cells[row][column].setVacuumHere();
 	}
 
+	/**
+	 * @param i fila
+	 * @param j columna
+	 * @return true si la posición está obstaculizada
+	 */
+	public boolean obstaculizedCell(int i, int j) {
+		if (getCells()[i][j].isObstacle()) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	// Return the parameter of sensor [clean, obstacle]
 	public boolean/*boolean[]*/ getSensorParameters(int row, int column) {
 		//return cells[row][column].getSensorParameters();
