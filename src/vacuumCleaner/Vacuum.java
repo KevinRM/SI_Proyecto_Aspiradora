@@ -51,7 +51,9 @@ public class Vacuum {
 	public void getSensorParameters() {
 		ArrayList<Integer> xEmptyCells = new ArrayList<Integer>();
 		ArrayList<Integer> yEmptyCells = new ArrayList<Integer>();
-
+		ArrayList<Integer> xObstacleCells = new ArrayList<Integer>();
+		ArrayList<Integer> yObstacleCells = new ArrayList<Integer>(); 
+		
 		// Centros del radio de sensado
 		int xCenter = getColPos();
 		int yCenter = getRowPos();
@@ -67,9 +69,19 @@ public class Vacuum {
 					if (!getFloor().obstaculizedCell(y, x)) {
 						xEmptyCells.add(x);
 						yEmptyCells.add(y);
+					// Guardar la posición de los obstáculos
+					} else {
+						xObstacleCells.add(x);
+						yObstacleCells.add(y);
 					}
 				}
 			}
+		}
+		
+		int xVacuumCell = getFloor().getCells()[yCenter][xCenter].getWidth() / 2;
+		int yVacuumCell = getFloor().getCells()[yCenter][xCenter].getHeight() / 2;
+		for (int i = 0; i < xObstacleCells.size(); i++) {
+			
 		}
 		
 		// Pintar las celdas que ve el sensor

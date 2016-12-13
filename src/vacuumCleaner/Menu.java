@@ -179,7 +179,6 @@ public class Menu extends JPanel {
 			}
 		});
 		startButton.setEnabled(false);
-		
 		// Button stop
 		stopButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
