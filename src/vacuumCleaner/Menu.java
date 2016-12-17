@@ -1,102 +1,97 @@
-/**
- * Proyecto de simulaci�n de una aspiradora robot que se mueve de forma
- * aut�noma para limpiar habitaciones
- */
 package vacuumCleaner;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
 
-
-/**
- * Clase Menu que ser� el men� de la aplicaci�n
- * 
- * @author Kevin Miguel Rivero Martin
- * @author Teguayco Guti�rrez Gonz�lez
- * @author Rub�n Labrador P�ez
- */
 public class Menu extends JPanel {
-	private Floor floor;			// Floor of the application
-	private Vacuum vacuum;
-	private MouseListener eventMouseToRemove;	// Reference to mouseListener for remove it
-	private Color COLOR_BACKGROUND = Color.LIGHT_GRAY;
-	private JButton startButton = new JButton("Empezar");
-	private JButton stopButton = new JButton("Parar");
-	private JButton restartButton = new JButton("Reiniciar");
-	private JButton setVacuum = new JButton("Poner aspiradora");
-	private JButton setMobilObstacle = new JButton("Poner obst�culo m�vil");
-	private JButton setStillObstacle = new JButton("Poner obst�culo inm�vil");
+	private Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 	
-	Menu(Floor floor, Vacuum vacuum) {
+	private Floor floor;
+	private Vacuum vacuum;
+	
+	public Menu(Floor floor, Vacuum vacuum) {
 		this.floor = floor;
 		this.vacuum = vacuum;
-		setBackground(COLOR_BACKGROUND);
-		setLayout(new GridBagLayout());
+		setBackground(BACKGROUND_COLOR);
+		setLayout(new GridLayout(4, 1));
 		
-		GridBagConstraints constraints = new GridBagConstraints();
-		constraints.fill = GridBagConstraints.BOTH;		// Buttons can stretch
+		JPanel roomSettingsPanel = new JPanel();
+		JPanel drawSettingsPanel = new JPanel();
+		JPanel animationSettingsPanel = new JPanel();
+		InternalMap internalMapPanel = new InternalMap();
 		
-		// Still obstacle Button
-		constraints.gridx = 0;          // Column
-		constraints.gridy = 0;  		// Row
-		constraints.gridwidth = 3;		// Fill 1 column
-		constraints.gridheight = 1;		// Fill 1 row
-		constraints.insets = new Insets(0, 0, 5, 0);	// Padding of element
-		add(setStillObstacle, constraints);
+		add(roomSettingsPanel);
+		add(drawSettingsPanel);
+		add(animationSettingsPanel);
+		add(internalMapPanel);
 		
-		// Mobile obstacle Button
-		constraints.gridx = 0;          // Column
-		constraints.gridy = 1;  		// Row
-		constraints.gridwidth = 3;		// Fill 1 column
-		constraints.gridheight = 1;		// Fill 1 row
-		constraints.insets = new Insets(0, 0, 5, 0);	// Padding of element
-		add(setMobilObstacle, constraints);
+		LineBorder lineBorderPanel = (LineBorder) BorderFactory.createLineBorder(Color.BLACK);
 		
-		// Vacuum Button
-		constraints.gridx = 0;          // Column
-		constraints.gridy = 2;  		// Row
-		constraints.gridwidth = 3;		// Fill 1 column
-		constraints.gridheight = 1;		// Fill 1 row
-		constraints.insets = new Insets(0, 0, 5, 0);	// Padding of element
-		add(setVacuum, constraints);
+		// Room
+		roomSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Room"));
+		roomSettingsPanel.setLayout(new FlowLayout());
+		roomSettingsPanel.add(new JLabel("Rows:"));
+		roomSettingsPanel.add(new JTextField());
+		roomSettingsPanel.add(new JLabel("Columns:"));
+		roomSettingsPanel.add(new JTextField());
+		roomSettingsPanel.add(new JLabel("% RND OBST."));
+		roomSettingsPanel.add(new JTextField());
+		JButton applyButton = new JButton("APPLY");
+		applyButton.setBackground(Color.WHITE);
+	    applyButton.setForeground(Color.BLACK);
+		roomSettingsPanel.add(applyButton);
 		
-		// Start Button
-		constraints.gridx = 0;          // Column
-		constraints.gridy = 3;  		// Row
-		constraints.gridwidth = 1;		// Fill 1 column
-		constraints.gridheight = 1;		// Fill 1 row
-		constraints.insets = new Insets(0, 0, 0, 1);	// Padding of element
-		add(startButton, constraints);
+		// Draw
+		drawSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Draw"));
+		drawSettingsPanel.setLayout(new GridLayout(2, 1));
+		ButtonGroup drawButtonsGroup = new ButtonGroup();
+		JRadioButton vacuumButton = new JRadioButton("Vacuum cleaner");
+		JRadioButton obstacleButton = new JRadioButton("Obstacle");
+		drawButtonsGroup.add(vacuumButton);
+		drawButtonsGroup.add(obstacleButton);
+		drawSettingsPanel.add(vacuumButton);
+		drawSettingsPanel.add(obstacleButton);
+
+		// Animation
+		Border animationSettingsPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Animation");		
+		animationSettingsPanel.setBorder(animationSettingsPanelBorder);
+		animationSettingsPanel.add(new JLabel("Speed: "));
+		JSlider speedSlider = new JSlider();
+		speedSlider.setForeground(Color.WHITE);
+		animationSettingsPanel.add(speedSlider);
+		JButton startButton = new JButton("START");
+		JButton resetButton = new JButton("RESET");
+		startButton.setBackground(Color.WHITE);
+		startButton.setForeground(Color.BLACK);
+		resetButton.setBackground(Color.WHITE);
+		resetButton.setForeground(Color.BLACK);
+		animationSettingsPanel.add(startButton);
+		animationSettingsPanel.add(resetButton);
 		
-		// Stop Button
-		constraints.gridx = 1;          // Column
-		constraints.gridy = 3;  		// Row
-		constraints.gridwidth = 1;		// Fill 1 column
-		constraints.gridheight = 1;		// Fill 1 row
-		constraints.insets = new Insets(0, 0, 0, 1);	// Padding of element
-		add(stopButton, constraints);
-				
-		// Restart Button
-		constraints.gridx = 2;          // Column
-		constraints.gridy = 3;  		// Row
-		constraints.gridwidth = 1;		// Fill 1 column
-		constraints.gridheight = 1;		// Fill 1 row
-		add(restartButton, constraints);
-		
-		initializeButtons();
+		//initializeButtons();
 	}
 	
 	private void initializeButtons() {
 		// Button set Vacuum
+		/*
 		setVacuum.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
@@ -186,5 +181,6 @@ public class Menu extends JPanel {
 			}
 		});
 		stopButton.setEnabled(false);
+		*/
 	}
 }
