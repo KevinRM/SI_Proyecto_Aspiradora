@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -27,7 +28,7 @@ import javax.swing.border.LineBorder;
 public class Menu extends JPanel {
 	private static final Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 	private static final String[] VACUUM_COLORS = {"BLUE", "RED", "GREEN", "PINK"};
-	private static final int TEXTFIELD_WIDTH = 100;
+	private static final int TEXTFIELD_WIDTH = 30;
 	private static final int TEXTFIELD_HEIGHT = 22;
 	
 	private Floor floor;
@@ -62,8 +63,8 @@ public class Menu extends JPanel {
 		add(roomSettingsPanel);
 		add(agentSettingsPanel);
 		add(drawSettingsPanel);
-		add(animationSettingsPanel);
 		add(internalMapPanel);
+		add(animationSettingsPanel);
 		
 		LineBorder lineBorderPanel = (LineBorder) BorderFactory.createLineBorder(Color.BLACK);
 		
@@ -71,24 +72,27 @@ public class Menu extends JPanel {
 		roomSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Room"));
 		roomSettingsPanel.setLayout(new BoxLayout(roomSettingsPanel, BoxLayout.Y_AXIS));
 		JPanel panel1 = new JPanel();
-		panel1.setLayout(new FlowLayout());
+		panel1.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel1.add(new JLabel("Number of rows (10-100):"));
 		panel1.add(mapRows);
+		panel1.add(Box.createRigidArea(new Dimension(10,0)));
 		roomSettingsPanel.add(panel1);
 		JPanel panel2 = new JPanel();
-		panel2.setLayout(new FlowLayout());
+		panel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		roomSettingsPanel.add(panel2);
 		panel2.add(new JLabel("Number of columns (10-100):"));
 		panel2.add(mapCols);
+		panel2.add(Box.createRigidArea(new Dimension(10,0)));
 		JPanel panel3 = new JPanel();
-		panel3.setLayout(new FlowLayout());
+		panel3.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		roomSettingsPanel.add(panel3);
-		panel3.add(new JLabel("Random obstacles percentage:"));
+		panel3.add(new JLabel("Random obstacles percent.:"));
 		panel3.add(rndObstaclesPercentage);
+		panel3.add(Box.createRigidArea(new Dimension(10,0)));
 		JPanel panel4 = new JPanel();
 		roomSettingsPanel.add(panel4);
-		applyButton.setBackground(Color.WHITE);
-	    applyButton.setForeground(Color.BLACK);
+		//applyButton.setBackground(Color.WHITE);
+	    //applyButton.setForeground(Color.BLACK);
 		panel4.add(applyButton);
 		
 		// Agent
@@ -104,11 +108,15 @@ public class Menu extends JPanel {
 		drawSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Draw"));
 		drawSettingsPanel.setLayout(new GridLayout(2, 1));
 		ButtonGroup drawButtonsGroup = new ButtonGroup();
-		drawButtonsGroup.add(vacuumRadioButton);
 		drawButtonsGroup.add(obstacleRadioButton);
-		drawSettingsPanel.add(vacuumRadioButton);
+		drawButtonsGroup.add(vacuumRadioButton);
 		drawSettingsPanel.add(obstacleRadioButton);
+		drawSettingsPanel.add(vacuumRadioButton);
 
+		// InternalMap
+		Border internalMapPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Internal Map");
+		internalMapPanel.setBorder(internalMapPanelBorder);
+		
 		// Animation
 		Border animationSettingsPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Animation");		
 		animationSettingsPanel.setBorder(animationSettingsPanelBorder);
@@ -119,15 +127,13 @@ public class Menu extends JPanel {
 		speedSlider.setForeground(Color.WHITE);
 		panel5.add(speedSlider);
 		JPanel panel6 = new JPanel();
-		startButton.setBackground(Color.WHITE);
-		startButton.setForeground(Color.BLACK);
-		resetButton.setBackground(Color.WHITE);
-		resetButton.setForeground(Color.BLACK);
+		//startButton.setBackground(Color.WHITE);
+		//startButton.setForeground(Color.BLACK);
+		//resetButton.setBackground(Color.WHITE);
+		//resetButton.setForeground(Color.BLACK);
 		panel6.add(startButton);
 		panel6.add(resetButton);
 		animationSettingsPanel.add(panel6, BorderLayout.SOUTH);
-		
-		//initializeButtons();
 	}
 	
 	private void initializeGUIComponents() {
@@ -136,7 +142,7 @@ public class Menu extends JPanel {
 		rndObstaclesPercentage = new JTextField();
 		applyButton = new JButton("APPLY");
 		sensorRange = new JTextField();
-		vacuumRadioButton = new JRadioButton("Vacuum Cleaner");
+		vacuumRadioButton = new JRadioButton("Vacuum Cleaner (only 1)");
 		vacuumColor = new JComboBox(VACUUM_COLORS);
 		obstacleRadioButton = new JRadioButton("Obstacle");
 		speedSlider = new JSlider();
@@ -154,100 +160,108 @@ public class Menu extends JPanel {
 		rndObstaclesPercentage.setHorizontalAlignment(JTextField.RIGHT);
 		sensorRange.setHorizontalAlignment(JTextField.RIGHT);
 	}
-	
-	// NOTA: los listeners fuera de esta clase, en un controlador
-	private void initializeButtons() {
-		// Button set Vacuum
-		/*
-		setVacuum.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
 
-				// Create the mouse event
-				eventMouseToRemove = new MouseListener() {
-					public void mouseClicked(MouseEvent arg0) {}
-					public void mouseEntered(MouseEvent arg0) {}
-					public void mouseExited(MouseEvent arg0) {}
-					public void mousePressed(MouseEvent arg0) {}
-					public void mouseReleased(MouseEvent arg0) {
-						// Set Vacuum in the cell
-						FloorCell cell = (FloorCell)arg0.getSource();
-						floor.setVacuum(cell.getRow(), cell.getColumn());
-						Vacuum.setPosition(cell.getRow(), cell.getColumn());
-						
-						// Remove the listener of the cells
-						FloorCell[][] cells = floor.getCells();
-						for (int i = 0; i < floor.getNumberRows(); i++) {
-							for (int j = 0; j < floor.getNumberColumns(); j++) {
-								cells[i][j].removeMouseListener(eventMouseToRemove);
-							}
-						}
-						// Disable button setVacuum
-						setVacuum.setEnabled(false);
-						// Enable button start
-						startButton.setEnabled(true);
-					}
-				};
-				
-				// Add mouseListener to cells
-				FloorCell[][] cells = floor.getCells();
-				for (int i = 0; i < floor.getNumberRows(); i++) {
-					for (int j = 0; j < floor.getNumberColumns(); j++) {
-						cells[i][j].addMouseListener(eventMouseToRemove);
-					}
-				}
-			}
-		});
-		
-		// Button set Still Obstacle
-		setStillObstacle.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+	public Floor getFloor() {
+		return floor;
+	}
 
-				// Create the mouse event
-				eventMouseToRemove = new MouseListener() {
-					public void mouseClicked(MouseEvent arg0) {}
-					public void mouseEntered(MouseEvent arg0) {}
-					public void mouseExited(MouseEvent arg0) {}
-					public void mousePressed(MouseEvent arg0) {}
-					public void mouseReleased(MouseEvent arg0) {
-						// Set Vacuum in the cell
-						FloorCell cell = (FloorCell) arg0.getSource();
-						cell.setObstacleHere();
+	public void setFloor(Floor floor) {
+		this.floor = floor;
+	}
 
-						// Remove the listener of the cells
-						FloorCell[][] cells = floor.getCells();
-						for (int i = 0; i < floor.getNumberRows(); i++) {
-							for (int j = 0; j < floor.getNumberColumns(); j++) {
-								cells[i][j].removeMouseListener(eventMouseToRemove);
-							}
-						}
-					}
-				};
+	public Vacuum getVacuum() {
+		return vacuum;
+	}
 
-				// Add mouseListener to cells
-				FloorCell[][] cells = floor.getCells();
-				for (int i = 0; i < floor.getNumberRows(); i++) {
-					for (int j = 0; j < floor.getNumberColumns(); j++) {
-						cells[i][j].addMouseListener(eventMouseToRemove);
-					}
-				}
-			}
-		});
-		
-		// Button start
-		startButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				vacuum.startClean();
-				stopButton.setEnabled(true);
-			}
-		});
-		startButton.setEnabled(false);
-		// Button stop
-		stopButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				vacuum.stopClean();
-			}
-		});
-		stopButton.setEnabled(false);
-		*/
+	public void setVacuum(Vacuum vacuum) {
+		this.vacuum = vacuum;
+	}
+
+	public JTextField getMapRows() {
+		return mapRows;
+	}
+
+	public void setMapRows(JTextField mapRows) {
+		this.mapRows = mapRows;
+	}
+
+	public JTextField getMapCols() {
+		return mapCols;
+	}
+
+	public void setMapCols(JTextField mapCols) {
+		this.mapCols = mapCols;
+	}
+
+	public JTextField getRndObstaclesPercentage() {
+		return rndObstaclesPercentage;
+	}
+
+	public void setRndObstaclesPercentage(JTextField rndObstaclesPercentage) {
+		this.rndObstaclesPercentage = rndObstaclesPercentage;
+	}
+
+	public JButton getApplyButton() {
+		return applyButton;
+	}
+
+	public void setApplyButton(JButton applyButton) {
+		this.applyButton = applyButton;
+	}
+
+	public JTextField getSensorRange() {
+		return sensorRange;
+	}
+
+	public void setSensorRange(JTextField sensorRange) {
+		this.sensorRange = sensorRange;
+	}
+
+	public JComboBox getVacuumColor() {
+		return vacuumColor;
+	}
+
+	public void setVacuumColor(JComboBox vacuumColor) {
+		this.vacuumColor = vacuumColor;
+	}
+
+	public JRadioButton getVacuumRadioButton() {
+		return vacuumRadioButton;
+	}
+
+	public void setVacuumRadioButton(JRadioButton vacuumRadioButton) {
+		this.vacuumRadioButton = vacuumRadioButton;
+	}
+
+	public JRadioButton getObstacleRadioButton() {
+		return obstacleRadioButton;
+	}
+
+	public void setObstacleRadioButton(JRadioButton obstacleRadioButton) {
+		this.obstacleRadioButton = obstacleRadioButton;
+	}
+
+	public JSlider getSpeedSlider() {
+		return speedSlider;
+	}
+
+	public void setSpeedSlider(JSlider speedSlider) {
+		this.speedSlider = speedSlider;
+	}
+
+	public JButton getStartButton() {
+		return startButton;
+	}
+
+	public void setStartButton(JButton startButton) {
+		this.startButton = startButton;
+	}
+
+	public JButton getResetButton() {
+		return resetButton;
+	}
+
+	public void setResetButton(JButton resetButton) {
+		this.resetButton = resetButton;
 	}
 }
