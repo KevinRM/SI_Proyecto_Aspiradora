@@ -319,9 +319,9 @@ public class Menu extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == obstacleRadioButton){
-				floor.SetPointerOption(Floor2.DRAW);
+				floor.SetPointerOption(Floor2.OBSTACLE);
 			} else if (e.getSource() == eraseRadioButton){
-				floor.SetPointerOption(Floor2.DROP);
+				floor.SetPointerOption(Floor2.DIRTY);
 			} else if (e.getSource() == vacuumRadioButton){
 				floor.SetPointerOption(Floor2.VACUUM);
 			}		

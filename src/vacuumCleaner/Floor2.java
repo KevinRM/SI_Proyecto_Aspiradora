@@ -16,9 +16,10 @@ public class Floor2 extends JPanel {
 	private int pointerOption = 1;
 	int zeroX = 0;
 	int zeroY = 0;
-	public static int DRAW = 1;
-	public static int DROP = 0;
+	public static int OBSTACLE = 1;
+	public static int DIRTY = 0;
 	public static int VACUUM = 2;
+	public static int CLEAR = 3;
 	private boolean vacuum = false;
 	Floor2 (Window win){
 		window = win;
@@ -53,21 +54,23 @@ public class Floor2 extends JPanel {
 		}
 		for(int i = 0; i < x; i++){
 			for(int j = 0; j < y; j++){
-				if (map [i][j] == DRAW){
+				if (map [i][j] == OBSTACLE){
 					g.setColor(Color.BLACK);
 
-				}else if (map [i][j] == DROP){
-					g.setColor(Color.WHITE);
+				}else if (map [i][j] == DIRTY){
+					g.setColor(Color.LIGHT_GRAY);
 
 				}else if ((map [i][j] == VACUUM)){
 					g.setColor(Color.GREEN);
+				}else if ((map [i][j] == CLEAR)){
+					g.setColor(Color.WHITE);
 				}
 				g.fillRect(zeroX+(i*cellSide)+1, zeroY+(j*cellSide)+1, cellSide-1, cellSide-1);
 			}
 		}
 	}
 	private void celDim() {
-		if ((this.getWidth()/x)<=(this.getHeight()/y)){//Comparación para ver que lado me limita el tamaño de celda, se coje el más pequeño para quepa en el lienzo.
+		if ((this.getWidth()/x)<=(this.getHeight()/y)){
 			cellSide = (this.getWidth()/x);
 		}
 		else {
@@ -85,7 +88,18 @@ public class Floor2 extends JPanel {
 			int eventX = (e.getX()-(zeroX))/cellSide;
 			int eventY = (e.getY()-(zeroY))/cellSide;
 			if (eventX < x && eventY < y){
-				map[eventX][eventY] = pointerOption;
+				if (pointerOption == VACUUM){
+					if (!vacuum){
+						map[eventX][eventY] = pointerOption;
+						vacuum = true;
+					}
+				} else if (map[eventX][eventY] == VACUUM && pointerOption != VACUUM){
+					map[eventX][eventY] = pointerOption;
+					vacuum = false;
+				} else if (map[eventX][eventY] != VACUUM && pointerOption != VACUUM){
+					map[eventX][eventY] = pointerOption;
+				}
+				
 			}
 			repaint();
 			// TODO Auto-generated method stub
