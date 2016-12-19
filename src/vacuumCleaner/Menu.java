@@ -24,14 +24,16 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class Menu extends JPanel {
 	private static final Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 	private static final String[] VACUUM_COLORS = {"BLUE", "RED", "GREEN", "PINK"};
 	private static final int TEXTFIELD_WIDTH = 30;
 	private static final int TEXTFIELD_HEIGHT = 22;
-	
-	private Floor floor;
+
+	private Floor2 floor;
 	private Vacuum vacuum;
 	private JTextField mapRows;
 	private JTextField mapCols;
@@ -41,33 +43,34 @@ public class Menu extends JPanel {
 	private JComboBox vacuumColor;
 	private JRadioButton vacuumRadioButton;
 	private JRadioButton obstacleRadioButton;
+	private JRadioButton eraseRadioButton;
 	private JSlider speedSlider;
 	private JButton startButton;
 	private JButton resetButton;
-	
-	public Menu(Floor floor, Vacuum vacuum) {
+
+	public Menu(Floor2 floor, Vacuum vacuum) {
 		this.floor = floor;
 		this.vacuum = vacuum;
 		setBackground(BACKGROUND_COLOR);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		initializeGUIComponents();
-		
+
 		JPanel roomSettingsPanel = new JPanel();
 		JPanel agentSettingsPanel = new JPanel();
 		JPanel drawSettingsPanel = new JPanel();
 		JPanel animationSettingsPanel = new JPanel();
 		InternalMap internalMapPanel = new InternalMap();
 		internalMapPanel.setPreferredSize(new Dimension(150, 400));
-		
+
 		add(roomSettingsPanel);
 		add(agentSettingsPanel);
 		add(drawSettingsPanel);
 		add(internalMapPanel);
 		add(animationSettingsPanel);
-		
+
 		LineBorder lineBorderPanel = (LineBorder) BorderFactory.createLineBorder(Color.BLACK);
-		
+
 		// Room
 		roomSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Room"));
 		roomSettingsPanel.setLayout(new BoxLayout(roomSettingsPanel, BoxLayout.Y_AXIS));
@@ -92,9 +95,10 @@ public class Menu extends JPanel {
 		JPanel panel4 = new JPanel();
 		roomSettingsPanel.add(panel4);
 		//applyButton.setBackground(Color.WHITE);
-	    //applyButton.setForeground(Color.BLACK);
+		//applyButton.setForeground(Color.BLACK);
+		applyButton.addMouseListener(new eventListener());
 		panel4.add(applyButton);
-		
+
 		// Agent
 		agentSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Agent"));
 		agentSettingsPanel.add(new JLabel("Sensor range:"));
@@ -103,20 +107,25 @@ public class Menu extends JPanel {
 		panel7.add(new JLabel("Color:"));
 		panel7.add(vacuumColor);
 		agentSettingsPanel.add(panel7);
-		
+
 		// Draw
 		drawSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Draw"));
 		drawSettingsPanel.setLayout(new GridLayout(2, 1));
 		ButtonGroup drawButtonsGroup = new ButtonGroup();
 		drawButtonsGroup.add(obstacleRadioButton);
 		drawButtonsGroup.add(vacuumRadioButton);
+		drawButtonsGroup.add(eraseRadioButton);
+		obstacleRadioButton.addActionListener(new acListener());
+		eraseRadioButton.addActionListener(new acListener());
+		vacuumRadioButton.addActionListener(new acListener());
 		drawSettingsPanel.add(obstacleRadioButton);
 		drawSettingsPanel.add(vacuumRadioButton);
+		drawSettingsPanel.add(eraseRadioButton);
 
 		// InternalMap
 		Border internalMapPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Internal Map");
 		internalMapPanel.setBorder(internalMapPanelBorder);
-		
+
 		// Animation
 		Border animationSettingsPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Animation");		
 		animationSettingsPanel.setBorder(animationSettingsPanelBorder);
@@ -135,7 +144,7 @@ public class Menu extends JPanel {
 		panel6.add(resetButton);
 		animationSettingsPanel.add(panel6, BorderLayout.SOUTH);
 	}
-	
+
 	private void initializeGUIComponents() {
 		mapRows = new JTextField();
 		mapCols = new JTextField();
@@ -143,29 +152,30 @@ public class Menu extends JPanel {
 		applyButton = new JButton("APPLY");
 		sensorRange = new JTextField();
 		vacuumRadioButton = new JRadioButton("Vacuum Cleaner (only 1)");
+		eraseRadioButton = new JRadioButton("Erase objects");
 		vacuumColor = new JComboBox(VACUUM_COLORS);
 		obstacleRadioButton = new JRadioButton("Obstacle");
 		speedSlider = new JSlider();
 		startButton = new JButton("START");
 		resetButton = new JButton("RESET");
-		
+
 		vacuumColor.setSelectedIndex(2);
 		mapRows.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT));
 		mapCols.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT));
 		rndObstaclesPercentage.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT));
 		sensorRange.setPreferredSize(new Dimension(TEXTFIELD_WIDTH, TEXTFIELD_HEIGHT));
-		
+
 		mapRows.setHorizontalAlignment(JTextField.RIGHT);
 		mapCols.setHorizontalAlignment(JTextField.RIGHT);
 		rndObstaclesPercentage.setHorizontalAlignment(JTextField.RIGHT);
 		sensorRange.setHorizontalAlignment(JTextField.RIGHT);
 	}
 
-	public Floor getFloor() {
+	public Floor2 getFloor() {
 		return floor;
 	}
 
-	public void setFloor(Floor floor) {
+	public void setFloor(Floor2 floor) {
 		this.floor = floor;
 	}
 
@@ -264,4 +274,61 @@ public class Menu extends JPanel {
 	public void setResetButton(JButton resetButton) {
 		this.resetButton = resetButton;
 	}
+	private class eventListener implements MouseListener{
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getSource() == applyButton ){
+				int x = Integer.parseInt(mapRows.getText());
+				int y = Integer.parseInt(mapCols.getText());
+				floor.setCels(x, y);
+			}
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			// TODO Auto-generated method stub
+
+		}
+
+	}
+	//Esto posiblemente sea mejor hacerlo con un action listener
+	
+	private class acListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == obstacleRadioButton){
+				floor.SetPointerOption(Floor2.DRAW);
+			} else if (e.getSource() == eraseRadioButton){
+				floor.SetPointerOption(Floor2.DROP);
+			} else if (e.getSource() == vacuumRadioButton){
+				floor.SetPointerOption(Floor2.VACUUM);
+			}		
+			// TODO Auto-generated method stub
+			
+		}
+		
+	}
+
 }
