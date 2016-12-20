@@ -34,6 +34,7 @@ public class Window extends JFrame {
 	private void buildWindow() {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setTitle("Intelligent Vacuum Cleaner Simulator");
+		setMinimumSize(new Dimension(WIDTH, HEIGHT));
 		setSize(WIDTH, HEIGHT);
 		setResizable(false);
 		setLocationRelativeTo(null);

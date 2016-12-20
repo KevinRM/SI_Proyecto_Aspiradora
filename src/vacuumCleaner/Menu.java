@@ -44,8 +44,7 @@ public class Menu extends JPanel {
 	private JComboBox vacuumColor;
 	private JRadioButton setVacuumRadioButton;
 	private JRadioButton setObstacleRadioButton;
-	private JRadioButton eraseObstacleRadioButton;
-	private JRadioButton eraseVacuumRadioButton;
+	private JRadioButton eraseObjectRadioButton;
 	private JSlider speedSlider;
 	private JButton startButton;
 	private JButton resetButton;
@@ -115,16 +114,20 @@ public class Menu extends JPanel {
 		drawSettingsPanel.setLayout(new GridLayout(2, 1));
 		ButtonGroup drawButtonsGroup = new ButtonGroup();
 		drawButtonsGroup.add(setObstacleRadioButton);
-		drawButtonsGroup.add(eraseObstacleRadioButton);
+		drawButtonsGroup.add(eraseObjectRadioButton);
 		drawButtonsGroup.add(setVacuumRadioButton);
-		drawButtonsGroup.add(eraseVacuumRadioButton);
 		setObstacleRadioButton.addActionListener(new acListener());
-		eraseObstacleRadioButton.addActionListener(new acListener());
+		eraseObjectRadioButton.addActionListener(new acListener());
 		setVacuumRadioButton.addActionListener(new acListener());
-		drawSettingsPanel.add(setObstacleRadioButton);
-		drawSettingsPanel.add(eraseObstacleRadioButton);
-		drawSettingsPanel.add(setVacuumRadioButton);
-		drawSettingsPanel.add(eraseVacuumRadioButton);
+		JPanel firstRadioButtonsRow = new JPanel();
+		firstRadioButtonsRow.setLayout(new FlowLayout(FlowLayout.CENTER));
+		firstRadioButtonsRow.add(setObstacleRadioButton);
+		firstRadioButtonsRow.add(eraseObjectRadioButton);
+		drawSettingsPanel.add(firstRadioButtonsRow);
+		JPanel vacuumRadioButtonPanel = new JPanel();
+		vacuumRadioButtonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		vacuumRadioButtonPanel.add(setVacuumRadioButton);
+		drawSettingsPanel.add(vacuumRadioButtonPanel);
 
 		// InternalMap
 		Border internalMapPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Internal Map");
@@ -157,8 +160,7 @@ public class Menu extends JPanel {
 		sensorRange = new JTextField();
 		setVacuumRadioButton = new JRadioButton("Set agent (only 1)");
 		setObstacleRadioButton = new JRadioButton("Set obstacle");
-		eraseVacuumRadioButton = new JRadioButton("Erase agent");
-		eraseObstacleRadioButton = new JRadioButton("Erase obstacle");
+		eraseObjectRadioButton = new JRadioButton("Erase object");
 		vacuumColor = new JComboBox(VACUUM_COLORS);
 		speedSlider = new JSlider();
 		startButton = new JButton("START");
@@ -280,20 +282,12 @@ public class Menu extends JPanel {
 		this.setObstacleRadioButton = setObstacleRadioButton;
 	}
 
-	public JRadioButton getEraseObstacleRadioButton() {
-		return eraseObstacleRadioButton;
+	public JRadioButton getEraseObjectRadioButton() {
+		return eraseObjectRadioButton;
 	}
 
-	public void setEraseObstacleRadioButton(JRadioButton eraseObjectRadioButton) {
-		this.eraseObstacleRadioButton = eraseObjectRadioButton;
-	}
-
-	public JRadioButton getEraseVacuumRadioButton() {
-		return eraseVacuumRadioButton;
-	}
-
-	public void setEraseVacuumRadioButton(JRadioButton eraseVacuumRadioButton) {
-		this.eraseVacuumRadioButton = eraseVacuumRadioButton;
+	public void setEraseObjectRadioButton(JRadioButton eraseObjectRadioButton) {
+		this.eraseObjectRadioButton = eraseObjectRadioButton;
 	}
 	
 	private class eventListener implements MouseListener{
@@ -342,7 +336,7 @@ public class Menu extends JPanel {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == setObstacleRadioButton){
 				floor.SetPointerOption(Floor2.OBSTACLE);
-			} else if (e.getSource() == eraseObstacleRadioButton){
+			} else if (e.getSource() == eraseObjectRadioButton){
 				floor.SetPointerOption(Floor2.DIRTY);
 			} else if (e.getSource() == setVacuumRadioButton){
 				floor.SetPointerOption(Floor2.VACUUM);
