@@ -32,6 +32,7 @@ public class Menu extends JPanel {
 	private static final String[] VACUUM_COLORS = {"BLUE", "RED", "GREEN", "PINK"};
 	private static final int TEXTFIELD_WIDTH = 30;
 	private static final int TEXTFIELD_HEIGHT = 22;
+	private static final int TEXTFIELD_RIGHT_GAP = 20;
 
 	private Floor2 floor;
 	private Vacuum vacuum;
@@ -41,9 +42,10 @@ public class Menu extends JPanel {
 	private JButton applyButton;
 	private JTextField sensorRange;
 	private JComboBox vacuumColor;
-	private JRadioButton vacuumRadioButton;
-	private JRadioButton obstacleRadioButton;
-	private JRadioButton eraseRadioButton;
+	private JRadioButton setVacuumRadioButton;
+	private JRadioButton setObstacleRadioButton;
+	private JRadioButton eraseObstacleRadioButton;
+	private JRadioButton eraseVacuumRadioButton;
 	private JSlider speedSlider;
 	private JButton startButton;
 	private JButton resetButton;
@@ -78,20 +80,20 @@ public class Menu extends JPanel {
 		panel1.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel1.add(new JLabel("Number of rows (10-100):"));
 		panel1.add(mapRows);
-		panel1.add(Box.createRigidArea(new Dimension(10,0)));
+		panel1.add(Box.createRigidArea(new Dimension(TEXTFIELD_RIGHT_GAP, 0)));
 		roomSettingsPanel.add(panel1);
 		JPanel panel2 = new JPanel();
 		panel2.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		roomSettingsPanel.add(panel2);
 		panel2.add(new JLabel("Number of columns (10-100):"));
 		panel2.add(mapCols);
-		panel2.add(Box.createRigidArea(new Dimension(10,0)));
+		panel2.add(Box.createRigidArea(new Dimension(TEXTFIELD_RIGHT_GAP, 0)));
 		JPanel panel3 = new JPanel();
 		panel3.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		roomSettingsPanel.add(panel3);
 		panel3.add(new JLabel("Random obstacles percent.:"));
 		panel3.add(rndObstaclesPercentage);
-		panel3.add(Box.createRigidArea(new Dimension(10,0)));
+		panel3.add(Box.createRigidArea(new Dimension(TEXTFIELD_RIGHT_GAP, 0)));
 		JPanel panel4 = new JPanel();
 		roomSettingsPanel.add(panel4);
 		//applyButton.setBackground(Color.WHITE);
@@ -112,15 +114,17 @@ public class Menu extends JPanel {
 		drawSettingsPanel.setBorder(BorderFactory.createTitledBorder(lineBorderPanel, "Draw"));
 		drawSettingsPanel.setLayout(new GridLayout(2, 1));
 		ButtonGroup drawButtonsGroup = new ButtonGroup();
-		drawButtonsGroup.add(obstacleRadioButton);
-		drawButtonsGroup.add(vacuumRadioButton);
-		drawButtonsGroup.add(eraseRadioButton);
-		obstacleRadioButton.addActionListener(new acListener());
-		eraseRadioButton.addActionListener(new acListener());
-		vacuumRadioButton.addActionListener(new acListener());
-		drawSettingsPanel.add(obstacleRadioButton);
-		drawSettingsPanel.add(vacuumRadioButton);
-		drawSettingsPanel.add(eraseRadioButton);
+		drawButtonsGroup.add(setObstacleRadioButton);
+		drawButtonsGroup.add(eraseObstacleRadioButton);
+		drawButtonsGroup.add(setVacuumRadioButton);
+		drawButtonsGroup.add(eraseVacuumRadioButton);
+		setObstacleRadioButton.addActionListener(new acListener());
+		eraseObstacleRadioButton.addActionListener(new acListener());
+		setVacuumRadioButton.addActionListener(new acListener());
+		drawSettingsPanel.add(setObstacleRadioButton);
+		drawSettingsPanel.add(eraseObstacleRadioButton);
+		drawSettingsPanel.add(setVacuumRadioButton);
+		drawSettingsPanel.add(eraseVacuumRadioButton);
 
 		// InternalMap
 		Border internalMapPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Internal Map");
@@ -151,10 +155,11 @@ public class Menu extends JPanel {
 		rndObstaclesPercentage = new JTextField();
 		applyButton = new JButton("APPLY");
 		sensorRange = new JTextField();
-		vacuumRadioButton = new JRadioButton("Vacuum Cleaner (only 1)");
-		eraseRadioButton = new JRadioButton("Erase objects");
+		setVacuumRadioButton = new JRadioButton("Set agent (only 1)");
+		setObstacleRadioButton = new JRadioButton("Set obstacle");
+		eraseVacuumRadioButton = new JRadioButton("Erase agent");
+		eraseObstacleRadioButton = new JRadioButton("Erase obstacle");
 		vacuumColor = new JComboBox(VACUUM_COLORS);
-		obstacleRadioButton = new JRadioButton("Obstacle");
 		speedSlider = new JSlider();
 		startButton = new JButton("START");
 		resetButton = new JButton("RESET");
@@ -234,23 +239,7 @@ public class Menu extends JPanel {
 	public void setVacuumColor(JComboBox vacuumColor) {
 		this.vacuumColor = vacuumColor;
 	}
-
-	public JRadioButton getVacuumRadioButton() {
-		return vacuumRadioButton;
-	}
-
-	public void setVacuumRadioButton(JRadioButton vacuumRadioButton) {
-		this.vacuumRadioButton = vacuumRadioButton;
-	}
-
-	public JRadioButton getObstacleRadioButton() {
-		return obstacleRadioButton;
-	}
-
-	public void setObstacleRadioButton(JRadioButton obstacleRadioButton) {
-		this.obstacleRadioButton = obstacleRadioButton;
-	}
-
+	
 	public JSlider getSpeedSlider() {
 		return speedSlider;
 	}
@@ -274,6 +263,39 @@ public class Menu extends JPanel {
 	public void setResetButton(JButton resetButton) {
 		this.resetButton = resetButton;
 	}
+	
+	public JRadioButton getSetVacuumRadioButton() {
+		return setVacuumRadioButton;
+	}
+
+	public void setSetVacuumRadioButton(JRadioButton setVacuumRadioButton) {
+		this.setVacuumRadioButton = setVacuumRadioButton;
+	}
+
+	public JRadioButton getSetObstacleRadioButton() {
+		return setObstacleRadioButton;
+	}
+
+	public void setSetObstacleRadioButton(JRadioButton setObstacleRadioButton) {
+		this.setObstacleRadioButton = setObstacleRadioButton;
+	}
+
+	public JRadioButton getEraseObstacleRadioButton() {
+		return eraseObstacleRadioButton;
+	}
+
+	public void setEraseObstacleRadioButton(JRadioButton eraseObjectRadioButton) {
+		this.eraseObstacleRadioButton = eraseObjectRadioButton;
+	}
+
+	public JRadioButton getEraseVacuumRadioButton() {
+		return eraseVacuumRadioButton;
+	}
+
+	public void setEraseVacuumRadioButton(JRadioButton eraseVacuumRadioButton) {
+		this.eraseVacuumRadioButton = eraseVacuumRadioButton;
+	}
+	
 	private class eventListener implements MouseListener{
 
 		@Override
@@ -312,23 +334,20 @@ public class Menu extends JPanel {
 		}
 
 	}
-	//Esto posiblemente sea mejor hacerlo con un action listener
 	
+	//Esto posiblemente sea mejor hacerlo con un action listener
 	private class acListener implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == obstacleRadioButton){
+			if (e.getSource() == setObstacleRadioButton){
 				floor.SetPointerOption(Floor2.OBSTACLE);
-			} else if (e.getSource() == eraseRadioButton){
+			} else if (e.getSource() == eraseObstacleRadioButton){
 				floor.SetPointerOption(Floor2.DIRTY);
-			} else if (e.getSource() == vacuumRadioButton){
+			} else if (e.getSource() == setVacuumRadioButton){
 				floor.SetPointerOption(Floor2.VACUUM);
 			}		
-			// TODO Auto-generated method stub
-			
 		}
 		
 	}
-
 }

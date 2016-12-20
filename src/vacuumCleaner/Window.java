@@ -10,9 +10,9 @@ import java.awt.Insets;
 import javax.swing.JFrame;
 
 public class Window extends JFrame {
-	private int WIDTH = 900;						// Width of the frame in pixels
-	private int HEIGHT = 550;						// height of the frame in pixels
-	private Color COLOR_BACKGROUND = Color.BLACK;	// Color of the frame background
+	private int WIDTH = 900;
+	private int HEIGHT = 620;
+	private Color COLOR_BACKGROUND = Color.BLACK;	
 	private Floor2 floor2 = new Floor2(this);
 	private Floor floor = new Floor();
 	private Vacuum vacuum = new Vacuum(floor);
