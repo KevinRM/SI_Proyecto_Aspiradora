@@ -31,7 +31,7 @@ public class Floor2 extends JPanel {
 		this.map = new int [x][y];//inicializar todo a 0 por si falla
 		for (int i = 0; i < x; i++){
 			for (int j = 0; j < y; j++){
-				map [i][j]= 0;
+				map [i][j]= DIRTY;
 			}
 		}
 		this.repaint();
@@ -58,7 +58,7 @@ public class Floor2 extends JPanel {
 					g.setColor(Color.BLACK);
 
 				}else if (map [i][j] == DIRTY){
-					g.setColor(Color.LIGHT_GRAY);
+					g.setColor(new Color(153, 128, 0));
 
 				}else if ((map [i][j] == VACUUM)){
 					g.setColor(Color.GREEN);

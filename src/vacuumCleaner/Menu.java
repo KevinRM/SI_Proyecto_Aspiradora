@@ -279,8 +279,8 @@ public class Menu extends JPanel {
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getSource() == applyButton ){
-				int x = Integer.parseInt(mapRows.getText());
-				int y = Integer.parseInt(mapCols.getText());
+				int x = Integer.parseInt(mapCols.getText());
+				int y = Integer.parseInt(mapRows.getText());
 				floor.setCels(x, y);
 			}
 			// TODO Auto-generated method stub
