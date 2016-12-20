@@ -30,7 +30,7 @@ import javax.swing.event.ChangeListener;
 public class Menu extends JPanel {
 	private static final Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 	private static final String[] VACUUM_COLORS = {"BLUE", "RED", "GREEN", "PINK"};
-	private static final int TEXTFIELD_WIDTH = 30;
+	private static final int TEXTFIELD_WIDTH = 35;
 	private static final int TEXTFIELD_HEIGHT = 22;
 	private static final int TEXTFIELD_RIGHT_GAP = 20;
 
