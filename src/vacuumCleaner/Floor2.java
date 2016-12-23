@@ -21,6 +21,7 @@ public class Floor2 extends JPanel {
 	public static int VACUUM = 2;
 	public static int CLEAR = 3;
 	private boolean vacuum = false;
+	
 	Floor2 (Window win){
 		window = win;
 		this.addMouseMotionListener(new motionListener());
@@ -28,13 +29,15 @@ public class Floor2 extends JPanel {
 	public void setCels (int x, int y){
 		this.x = x;
 		this.y = y;
-		this.map = new int [x][y];//inicializar todo a 0 por si falla
-		for (int i = 0; i < x; i++){
-			for (int j = 0; j < y; j++){
+		this.map = new int [x][y];
+		
+		for (int i = 0; i < x; i++) {
+			for (int j = 0; j < y; j++) {
 				map [i][j]= DIRTY;
 			}
 		}
-		this.repaint();
+		
+		repaint();
 	}
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -69,6 +72,7 @@ public class Floor2 extends JPanel {
 			}
 		}
 	}
+	
 	private void celDim() {
 		if ((this.getWidth()/x)<=(this.getHeight()/y)){
 			cellSide = (this.getWidth()/x);
@@ -77,12 +81,12 @@ public class Floor2 extends JPanel {
 			cellSide = (this.getHeight()/y);
 		}
 	}
+	
 	public void SetPointerOption (int option){
 		pointerOption = option;	
 	}
 
 	private class motionListener implements MouseMotionListener{
-
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			int eventX = (e.getX()-(zeroX))/cellSide;
@@ -111,8 +115,5 @@ public class Floor2 extends JPanel {
 			// TODO Auto-generated method stub
 
 		}
-
 	}
-
-
 }

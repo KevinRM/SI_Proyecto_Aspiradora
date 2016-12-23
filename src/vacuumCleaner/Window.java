@@ -15,7 +15,7 @@ public class Window extends JFrame {
 	private Color COLOR_BACKGROUND = Color.BLACK;	
 	private Floor2 floor2 = new Floor2(this);
 	private Floor floor = new Floor();
-	private Vacuum vacuum = new Vacuum(floor);
+	private Vacuum vacuum = new Vacuum(floor2);
 	private Menu menu = new Menu(floor2, vacuum);
 	
 	Window() {
@@ -27,7 +27,7 @@ public class Window extends JFrame {
 		floor2.setVisible(true);
 		// Estableciendo las dimensiones del mapa
 		Dimension dim = menu.getSize();
-		floor2.setSize((int) (this.getWidth()-dim.getWidth()), this.getHeight());
+		floor2.setSize((int) (this.getWidth() - dim.getWidth()), this.getHeight());
 		floor2.setCels(20, 20);
 	}
 	

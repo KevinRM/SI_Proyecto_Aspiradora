@@ -8,6 +8,7 @@ public class Main {
 		try {
 			// Set the system's Lookn'Feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			UIManager.put("Slider.paintValue", false);
 	    	new Window();
 	    }
 		catch (UnsupportedLookAndFeelException e) {

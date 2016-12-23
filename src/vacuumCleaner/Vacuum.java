@@ -1,7 +1,3 @@
-/**
- * Proyecto de simulaciï¿½n de una aspiradora robot que se mueve de forma
- * autï¿½noma para limpiar habitaciones
- */
 package vacuumCleaner;
 
 import java.awt.event.ActionEvent;
@@ -10,23 +6,17 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
-/**
- * Clase Vacuum que representa la aspiradora que se movera y limpiarÃ¡ el suelo
- * 
- * @author Kevin Miguel Rivero Martin
- * @author Teguayco Gutiï¿½rrez Gonzï¿½lez
- * @author Rubï¿½n Labrador Pï¿½ez
- */
 public class Vacuum {
-	private Floor floor;			// Floor where the vacuum moves
+	private Floor2 floor;
 	private static int rowPos = 0;
 	private static int colPos = 0;
 	private Timer timerAlgorithm;
-	private int TIME_TO_TIMER = 1000;	// In ms
-
-	Vacuum(Floor floor) {
-		this.floor = floor;		// Get the floor
-		algorithClean();
+	private int TIME_TO_TIMER = 1000;
+	private InternalMap internalMap;
+	
+	Vacuum(Floor2 floor) {
+		this.floor = floor;
+		algorithmClean();
 	}
 
 	// Set position in the array to paint vacuum during the algorithm
@@ -35,7 +25,7 @@ public class Vacuum {
 		colPos = column;
 	}
 
-	private void algorithClean() {
+	private void algorithmClean() {
 		timerAlgorithm = new Timer(TIME_TO_TIMER, new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				/*floor.getCells()[xPos][yPos].removeVacuumHere();
@@ -46,10 +36,9 @@ public class Vacuum {
 			}
 		});
 	}
-
 	
 	public void getSensorParameters() {
-		ArrayList<Integer> xEmptyCells = new ArrayList<Integer>();
+	/*	ArrayList<Integer> xEmptyCells = new ArrayList<Integer>();
 		ArrayList<Integer> yEmptyCells = new ArrayList<Integer>();
 		ArrayList<Integer> xObstacleCells = new ArrayList<Integer>();
 		ArrayList<Integer> yObstacleCells = new ArrayList<Integer>(); 
@@ -88,6 +77,7 @@ public class Vacuum {
 		for (int i = 0; i < xEmptyCells.size(); i++) {
 			floor.getCells()[yEmptyCells.get(i)][xEmptyCells.get(i)].setCleanCell();
 		}
+		*/
 	}
 
 	/**
@@ -105,11 +95,11 @@ public class Vacuum {
 		timerAlgorithm.stop();
 	}
 
-	public Floor getFloor() {
+	public Floor2 getFloor() {
 		return floor;
 	}
 
-	public void setFloor(Floor floor) {
+	public void setFloor(Floor2 floor) {
 		this.floor = floor;
 	}
 
@@ -135,5 +125,13 @@ public class Vacuum {
 
 	public void setTimerAlgorithm(Timer timerAlgorithm) {
 		this.timerAlgorithm = timerAlgorithm;
+	}
+
+	public InternalMap getInternalMap() {
+		return internalMap;
+	}
+
+	public void setInternalMap(InternalMap internalMap) {
+		this.internalMap = internalMap;
 	}
 }

@@ -22,7 +22,9 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -33,7 +35,9 @@ public class Menu extends JPanel {
 	private static final int TEXTFIELD_WIDTH = 35;
 	private static final int TEXTFIELD_HEIGHT = 22;
 	private static final int TEXTFIELD_RIGHT_GAP = 20;
-
+	private static final int INTERNALMAP_DEFAULT_NROWS = 20;
+	private static final int INTERNALMAP_DEFAULT_NCOLS = 20;
+	
 	private Floor2 floor;
 	private Vacuum vacuum;
 	private JTextField mapRows;
@@ -48,6 +52,7 @@ public class Menu extends JPanel {
 	private JSlider speedSlider;
 	private JButton startButton;
 	private JButton resetButton;
+	private InternalMap internalMap;
 
 	public Menu(Floor2 floor, Vacuum vacuum) {
 		this.floor = floor;
@@ -61,9 +66,13 @@ public class Menu extends JPanel {
 		JPanel agentSettingsPanel = new JPanel();
 		JPanel drawSettingsPanel = new JPanel();
 		JPanel animationSettingsPanel = new JPanel();
-		InternalMap internalMapPanel = new InternalMap();
+		JPanel internalMapPanel = new JPanel();
+		internalMapPanel.setLayout(new GridLayout(1, 1));
+		internalMap = new InternalMap(INTERNALMAP_DEFAULT_NROWS, 
+												INTERNALMAP_DEFAULT_NCOLS);
 		internalMapPanel.setPreferredSize(new Dimension(150, 400));
-
+		internalMapPanel.add(internalMap);
+		
 		add(roomSettingsPanel);
 		add(agentSettingsPanel);
 		add(drawSettingsPanel);
@@ -150,6 +159,8 @@ public class Menu extends JPanel {
 		panel6.add(startButton);
 		panel6.add(resetButton);
 		animationSettingsPanel.add(panel6, BorderLayout.SOUTH);
+		
+		internalMap.repaint();
 	}
 
 	private void initializeGUIComponents() {
@@ -343,5 +354,13 @@ public class Menu extends JPanel {
 			}		
 		}
 		
+	}
+
+	public InternalMap getInternalMap() {
+		return internalMap;
+	}
+
+	public void setInternalMap(InternalMap internalMap) {
+		this.internalMap = internalMap;
 	}
 }
