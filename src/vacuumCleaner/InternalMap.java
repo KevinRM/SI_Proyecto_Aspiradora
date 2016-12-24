@@ -18,6 +18,7 @@ public class InternalMap extends JPanel {
 	private int ncols;
 	private CellState[][] cells;
 	private Color vacuumColor;
+	private boolean vacuumSet;
 	
 	public InternalMap() {
 		
@@ -28,11 +29,12 @@ public class InternalMap extends JPanel {
 		ncols = cols;
 		cells = new CellState[rows][cols];
 		vacuumColor = VACUUM_DEFAULT_COLOR;
+		vacuumSet = false;
 		initializeCells();
 	}
 	
 	/**
-	 * Initialize all the cells as dirty.
+	 * Initialize all the cells as unknown.
 	 */
 	private void initializeCells() {
 		for (int i = 0; i < getnRows(); i++) {
@@ -42,6 +44,9 @@ public class InternalMap extends JPanel {
 		}
 	}
 	
+	/**
+	 * Returns the length of a cell to be SQUARE.
+	 */
 	private double getCellPixelSize() {
 		if ((getnRows() > 0) && (getnCols() > 0)) {
 			if ((getWidth() / getnCols()) <= (getHeight() / getnRows())) {
@@ -60,9 +65,10 @@ public class InternalMap extends JPanel {
 		int pixelRowStart = 0;
 		int pixelColStart = 0;
 		
-		pixelColStart = (int) ((getWidth() / 2) - ((int) cellSpace * (getnCols() / 2)));
+		// First pixel coordinates
 		pixelRowStart = (int) ((getHeight() / 2) - ((int) cellSpace * (getnRows() / 2)));	
-			
+		pixelColStart = (int) ((getWidth() / 2) - ((int) cellSpace * (getnCols() / 2)));	
+		
 		// Cells
 		for (int i = 0; i < getnRows(); i++) {
 			for (int j = 0; j < getnCols(); j++) {
@@ -94,22 +100,90 @@ public class InternalMap extends JPanel {
 		}
 	}
 	
-	public void setVacuumPos(int row, int col) {
-		getCells()[row][col] = CellState.VACUUM;
+	public boolean setVacuumPos(int row, int col) {
+		if (!vacuumSet) {
+			getCells()[row][col] = CellState.VACUUM;
+			return true;
+		} else {
+			return false;
+		}
 	}
 	
 	public void setObstacleAtPos(int row, int col) {
+		if (getCells()[row][col] == CellState.VACUUM) {
+			setVacuumSet(false);
+		}
+		
 		getCells()[row][col] = CellState.OBSTACLE;
 	}
 	
 	public void setCleanCell(int row, int col) {
+		if (getCells()[row][col] == CellState.VACUUM) {
+			setVacuumSet(false);
+		}
+		
 		getCells()[row][col] = CellState.CLEAN;
 	}
-	
 	public void setDirtyCell(int row, int col) {
+		if (getCells()[row][col] == CellState.VACUUM) {
+			setVacuumSet(false);
+		}
+		
 		getCells()[row][col] = CellState.DIRTY;
 	}
+	
+	public void setUnknownCell(int row, int col) {
+		if (getCells()[row][col] == CellState.VACUUM) {
+			setVacuumSet(false);
+		}
+		
+		getCells()[row][col] = CellState.UNKNOWN;
+	}
 
+	public boolean isVacuum(int row, int col) {
+		if (getCells()[row][col] == CellState.VACUUM) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isObstacle(int row, int col) {
+		if (getCells()[row][col] == CellState.OBSTACLE) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isClean(int row, int col) {
+		if (getCells()[row][col] == CellState.CLEAN) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isDirty(int row, int col) {
+		if (getCells()[row][col] == CellState.DIRTY) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public boolean isUnknown(int row, int col) {
+		if (getCells()[row][col] == CellState.UNKNOWN) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	/****************************************************
+	 *               Getters and Setters                *
+	 ****************************************************/
+	
 	public int getnRows() {
 		return nrows;
 	}
@@ -156,5 +230,13 @@ public class InternalMap extends JPanel {
 
 	public void setVacuumColor(Color vacuumColor) {
 		this.vacuumColor = vacuumColor;
+	}
+
+	public boolean isVacuumSet() {
+		return vacuumSet;
+	}
+
+	public void setVacuumSet(boolean vacuumSet) {
+		this.vacuumSet = vacuumSet;
 	}
 }
