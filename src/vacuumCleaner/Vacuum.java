@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 public class Vacuum {
-	private Floor2 floor;
+	private RealMap floor;
 	private static int rowPos = 0;
 	private static int colPos = 0;
 	private Timer timerAlgorithm;
 	private int TIME_TO_TIMER = 1000;
 	private InternalMap internalMap;
 	
-	Vacuum(Floor2 floor) {
+	Vacuum(RealMap floor) {
 		this.floor = floor;
 		algorithmClean();
 	}
@@ -95,11 +95,11 @@ public class Vacuum {
 		timerAlgorithm.stop();
 	}
 
-	public Floor2 getFloor() {
+	public RealMap getFloor() {
 		return floor;
 	}
 
-	public void setFloor(Floor2 floor) {
+	public void setFloor(RealMap floor) {
 		this.floor = floor;
 	}
 

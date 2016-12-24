@@ -13,8 +13,7 @@ public class Window extends JFrame {
 	private int WIDTH = 900;
 	private int HEIGHT = 620;
 	private Color COLOR_BACKGROUND = Color.BLACK;	
-	private Floor2 floor2 = new Floor2(this);
-	private Floor floor = new Floor();
+	private RealMap floor2 = new RealMap(this);
 	private Vacuum vacuum = new Vacuum(floor2);
 	private Menu menu = new Menu(floor2, vacuum);
 	

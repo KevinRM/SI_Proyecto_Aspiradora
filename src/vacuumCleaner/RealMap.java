@@ -7,7 +7,7 @@ import java.awt.event.MouseMotionListener;
 
 import javax.swing.JPanel;
 
-public class Floor2 extends JPanel {
+public class RealMap extends JPanel {
 	private int [][] map;
 	private Window window;
 	private int x = 0;
@@ -22,7 +22,7 @@ public class Floor2 extends JPanel {
 	public static int CLEAR = 3;
 	private boolean vacuum = false;
 	
-	Floor2 (Window win){
+	RealMap (Window win){
 		window = win;
 		this.addMouseMotionListener(new motionListener());
 	}

@@ -38,7 +38,7 @@ public class Menu extends JPanel {
 	private static final int INTERNALMAP_DEFAULT_NROWS = 20;
 	private static final int INTERNALMAP_DEFAULT_NCOLS = 20;
 	
-	private Floor2 floor;
+	private RealMap floor;
 	private Vacuum vacuum;
 	private JTextField mapRows;
 	private JTextField mapCols;
@@ -54,7 +54,7 @@ public class Menu extends JPanel {
 	private JButton resetButton;
 	private InternalMap internalMap;
 
-	public Menu(Floor2 floor, Vacuum vacuum) {
+	public Menu(RealMap floor, Vacuum vacuum) {
 		this.floor = floor;
 		this.vacuum = vacuum;
 		setBackground(BACKGROUND_COLOR);
@@ -189,11 +189,11 @@ public class Menu extends JPanel {
 		sensorRange.setHorizontalAlignment(JTextField.RIGHT);
 	}
 
-	public Floor2 getFloor() {
+	public RealMap getFloor() {
 		return floor;
 	}
 
-	public void setFloor(Floor2 floor) {
+	public void setFloor(RealMap floor) {
 		this.floor = floor;
 	}
 
@@ -346,11 +346,11 @@ public class Menu extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == setObstacleRadioButton){
-				floor.SetPointerOption(Floor2.OBSTACLE);
+				floor.SetPointerOption(RealMap.OBSTACLE);
 			} else if (e.getSource() == eraseObjectRadioButton){
-				floor.SetPointerOption(Floor2.DIRTY);
+				floor.SetPointerOption(RealMap.DIRTY);
 			} else if (e.getSource() == setVacuumRadioButton){
-				floor.SetPointerOption(Floor2.VACUUM);
+				floor.SetPointerOption(RealMap.VACUUM);
 			}		
 		}
 		
