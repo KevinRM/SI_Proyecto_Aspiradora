@@ -6,10 +6,9 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class Main {
 	public static void main(String[] args) {
 		try {
-			// Set the system's Lookn'Feel
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 			UIManager.put("Slider.paintValue", false);
-	    	new Window();
+	    	new MainWindow();
 	    }
 		catch (UnsupportedLookAndFeelException e) {
 		       e.printStackTrace();

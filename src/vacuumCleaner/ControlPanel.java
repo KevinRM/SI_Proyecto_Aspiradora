@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -22,14 +21,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
-import javax.swing.UIManager;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-public class Menu extends JPanel {
+public class ControlPanel extends JPanel {
 	private static final Color BACKGROUND_COLOR = Color.LIGHT_GRAY;
 	private static final String[] VACUUM_COLORS = {"BLUE", "RED", "GREEN", "PINK"};
 	private static final int TEXTFIELD_WIDTH = 35;
@@ -38,7 +33,6 @@ public class Menu extends JPanel {
 	private static final int INTERNALMAP_DEFAULT_NROWS = 20;
 	private static final int INTERNALMAP_DEFAULT_NCOLS = 30;
 	
-	private RealMap floor;
 	private Vacuum vacuum;
 	private JTextField mapRows;
 	private JTextField mapCols;
@@ -54,9 +48,7 @@ public class Menu extends JPanel {
 	private JButton resetButton;
 	private InternalMap internalMap;
 
-	public Menu(RealMap floor, Vacuum vacuum) {
-		this.floor = floor;
-		this.vacuum = vacuum;
+	public ControlPanel() {
 		setBackground(BACKGROUND_COLOR);
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -106,7 +98,6 @@ public class Menu extends JPanel {
 		roomSettingsPanel.add(panel4);
 		//applyButton.setBackground(Color.WHITE);
 		//applyButton.setForeground(Color.BLACK);
-		applyButton.addMouseListener(new eventListener());
 		panel4.add(applyButton);
 
 		// Agent
@@ -125,9 +116,6 @@ public class Menu extends JPanel {
 		drawButtonsGroup.add(setObstacleRadioButton);
 		drawButtonsGroup.add(eraseObjectRadioButton);
 		drawButtonsGroup.add(setVacuumRadioButton);
-		setObstacleRadioButton.addActionListener(new acListener());
-		eraseObjectRadioButton.addActionListener(new acListener());
-		setVacuumRadioButton.addActionListener(new acListener());
 		JPanel firstRadioButtonsRow = new JPanel();
 		firstRadioButtonsRow.setLayout(new FlowLayout(FlowLayout.CENTER));
 		firstRadioButtonsRow.add(setObstacleRadioButton);
@@ -187,14 +175,6 @@ public class Menu extends JPanel {
 		mapCols.setHorizontalAlignment(JTextField.RIGHT);
 		rndObstaclesPercentage.setHorizontalAlignment(JTextField.RIGHT);
 		sensorRange.setHorizontalAlignment(JTextField.RIGHT);
-	}
-
-	public RealMap getFloor() {
-		return floor;
-	}
-
-	public void setFloor(RealMap floor) {
-		this.floor = floor;
 	}
 
 	public Vacuum getVacuum() {
@@ -301,46 +281,7 @@ public class Menu extends JPanel {
 		this.eraseObjectRadioButton = eraseObjectRadioButton;
 	}
 	
-	private class eventListener implements MouseListener{
-
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			if (e.getSource() == applyButton ){
-				int x = Integer.parseInt(mapCols.getText());
-				int y = Integer.parseInt(mapRows.getText());
-				floor.setCels(x, y);
-			}
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-
-	}
-	
-	//Esto posiblemente sea mejor hacerlo con un action listener
+/*	//Esto posiblemente sea mejor hacerlo con un action listener
 	private class acListener implements ActionListener{
 
 		@Override
@@ -355,7 +296,7 @@ public class Menu extends JPanel {
 		}
 		
 	}
-
+*/
 	public InternalMap getInternalMap() {
 		return internalMap;
 	}

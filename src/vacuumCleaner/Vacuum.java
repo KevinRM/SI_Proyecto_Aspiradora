@@ -7,36 +7,42 @@ import java.util.ArrayList;
 import javax.swing.Timer;
 
 public class Vacuum {
-	private RealMap floor;
-	private static int rowPos = 0;
-	private static int colPos = 0;
-	private Timer timerAlgorithm;
-	private int TIME_TO_TIMER = 1000;
+	private static final int DEFAULT_ANIMATION_TIME = 1000;
+	
+	
+	/**
+	 * NOTA: revisar código de esta clase
+	 * 
+	 * 
+	 * el algoritmo de sensado y limpieza se podría programar aquí mismo
+	 */
+	
+	private int nrow;
+	private int ncol;
+	private RealMap realMap;
 	private InternalMap internalMap;
+	private int animationTime;
+	private Timer animationTimer;
 	
-	Vacuum(RealMap floor) {
-		this.floor = floor;
-		algorithmClean();
+	Vacuum(RealMap aRealMap, InternalMap anInternalMap) {
+		nrow = -1;
+		ncol = -1;
+		realMap = aRealMap;
+		internalMap = anInternalMap;
+		animationTime = DEFAULT_ANIMATION_TIME;
+		animationTimer = null;
 	}
 
-	// Set position in the array to paint vacuum during the algorithm
-	public static void setPosition(int row, int column) {
-		rowPos = row;
-		colPos = column;
-	}
-
-	private void algorithmClean() {
-		timerAlgorithm = new Timer(TIME_TO_TIMER, new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				/*floor.getCells()[xPos][yPos].removeVacuumHere();
-				yPos--;
-				floor.setVacuum(xPos, yPos);*/
-				// getSensorParameters para obtener si es obstaculo o limpia de las celdas de alrededor
-				// floor.setVacuum(i, j) para poner la aspiradora en una determinada celda
-			}
-		});
+	public void setNewPosition(int newRow, int newCol) {
+		setnRow(newRow);
+		setnCol(newCol);
 	}
 	
+	public void applyObstacleSensor() {
+		
+	}
+	
+	// este metodo borrarlo... todavía no
 	public void getSensorParameters() {
 	/*	ArrayList<Integer> xEmptyCells = new ArrayList<Integer>();
 		ArrayList<Integer> yEmptyCells = new ArrayList<Integer>();
@@ -80,51 +86,32 @@ public class Vacuum {
 		*/
 	}
 
-	/**
-	 * Execute the algorithm for cleaning the room
-	 */
-	public void startClean() {
-		//timerAlgorithm.start();
-		getSensorParameters();
+	/****************************************************
+	 *               Getters and Setters                *
+	 ****************************************************/
+	
+	public int getnRow() {
+		return nrow;
 	}
 
-	/**
-	 * Stop the algorithm for cleaning the room
-	 */
-	public void stopClean() {
-		timerAlgorithm.stop();
+	public void setnRow(int nrow) {
+		this.nrow = nrow;
 	}
 
-	public RealMap getFloor() {
-		return floor;
+	public int getnCol() {
+		return ncol;
 	}
 
-	public void setFloor(RealMap floor) {
-		this.floor = floor;
+	public void setnCol(int ncol) {
+		this.ncol = ncol;
 	}
 
-	public static int getRowPos() {
-		return rowPos;
+	public RealMap getRealMap() {
+		return realMap;
 	}
 
-	public static void setRowPos(int rowPos) {
-		Vacuum.rowPos = rowPos;
-	}
-
-	public static int getColPos() {
-		return colPos;
-	}
-
-	public static void setColPos(int colPos) {
-		Vacuum.colPos = colPos;
-	}
-
-	public Timer getTimerAlgorithm() {
-		return timerAlgorithm;
-	}
-
-	public void setTimerAlgorithm(Timer timerAlgorithm) {
-		this.timerAlgorithm = timerAlgorithm;
+	public void setRealMap(RealMap realMap) {
+		this.realMap = realMap;
 	}
 
 	public InternalMap getInternalMap() {
@@ -133,5 +120,21 @@ public class Vacuum {
 
 	public void setInternalMap(InternalMap internalMap) {
 		this.internalMap = internalMap;
+	}
+
+	public int getAnimationTime() {
+		return animationTime;
+	}
+
+	public void setAnimationTime(int animationTime) {
+		this.animationTime = animationTime;
+	}
+
+	public Timer getAnimationTimer() {
+		return animationTimer;
+	}
+
+	public void setAnimationTimer(Timer animationTimer) {
+		this.animationTimer = animationTimer;
 	}
 }
