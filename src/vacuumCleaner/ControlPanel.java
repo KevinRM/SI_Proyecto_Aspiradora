@@ -31,7 +31,7 @@ public class ControlPanel extends JPanel {
 	private static final int TEXTFIELD_HEIGHT = 22;
 	private static final int TEXTFIELD_RIGHT_GAP = 20;
 	private static final int INTERNALMAP_DEFAULT_NROWS = 20;
-	private static final int INTERNALMAP_DEFAULT_NCOLS = 30;
+	private static final int INTERNALMAP_DEFAULT_NCOLS = 20;
 	
 	private Vacuum vacuum;
 	private JTextField mapRows;

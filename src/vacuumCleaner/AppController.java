@@ -73,24 +73,7 @@ public class AppController {
 		getRealMap().addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int rowClicked = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
-				int colClicked = (e.getX() - getRealMap().getPixelColStart()) / getRealMap().getCellSpace();
-				
-				if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
-					getRealMap().setObstacleAtPos(rowClicked, colClicked);
-				} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
-					if (!getRealMap().isVacuumSet()) {
-						getRealMap().setVacuumAtPos(rowClicked, colClicked);
-					} else {
-						JOptionPane.showMessageDialog(getControlPanel().getParent(), 
-								"A vacuum is already set on the map. ", 
-								"Warning", 
-								JOptionPane.INFORMATION_MESSAGE);
-					}
-				} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
-					getRealMap().setDirtyCell(rowClicked, colClicked);
-				}
-				
+				paintTargetCellForRealMap(e.getX(), e.getY());
 				getRealMap().repaint();
 			}
 		});
@@ -101,17 +84,7 @@ public class AppController {
 		getRealMap().addMouseMotionListener(new MouseMotionListener() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
-				int rowDragged = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
-				int colDragged = (e.getX() - getRealMap().getPixelColStart()) / getRealMap().getCellSpace();
-				
-				if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
-					getRealMap().setObstacleAtPos(rowDragged, colDragged);
-				} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
-					getRealMap().setVacuumAtPos(rowDragged, colDragged);
-				} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
-					getRealMap().setDirtyCell(rowDragged, colDragged);
-				}
-				
+				paintTargetCellForRealMap(e.getX(), e.getY());
 				getRealMap().repaint();
 			}
 
@@ -219,6 +192,36 @@ public class AppController {
 			}
 			
 		});
+	}
+	
+	/**
+	 * Determines what cell of the real map has been clicked
+	 * and paint the object on it.
+	 * 
+	 * @param pixelX
+	 * @param pixelY
+	 */
+	private void paintTargetCellForRealMap(int pixelX, int pixelY) {
+		int rowClicked = (pixelY - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
+		int colClicked = (pixelX - getRealMap().getPixelColStart()) / getRealMap().getCellSpace();
+		
+		if ((rowClicked >= 0) && (rowClicked < getRealMap().getnRows()) &&
+				(colClicked >= 0) && colClicked < getRealMap().getnCols()) {
+			if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
+				getRealMap().setObstacleAtPos(rowClicked, colClicked);
+			} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
+				if (!getRealMap().isVacuumSet()) {
+					getRealMap().setVacuumAtPos(rowClicked, colClicked);
+				} else {
+					JOptionPane.showMessageDialog(getControlPanel().getParent(), 
+							"A vacuum is already set on the map. ", 
+							"Warning", 
+							JOptionPane.INFORMATION_MESSAGE);
+				}
+			} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
+				getRealMap().setDirtyCell(rowClicked, colClicked);
+			}
+		}
 	}
 	
 	private void displayWrongNumberOfRowsOrColumnsDialog() {
