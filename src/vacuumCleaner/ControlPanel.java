@@ -159,6 +159,7 @@ public class ControlPanel extends JPanel {
 		sensorRange = new JTextField();
 		setVacuumRadioButton = new JRadioButton("Set agent (only 1)");
 		setObstacleRadioButton = new JRadioButton("Set obstacle");
+		setObstacleRadioButton.setSelected(true);
 		eraseObjectRadioButton = new JRadioButton("Erase object");
 		vacuumColor = new JComboBox(VACUUM_COLORS);
 		speedSlider = new JSlider();
@@ -281,22 +282,6 @@ public class ControlPanel extends JPanel {
 		this.eraseObjectRadioButton = eraseObjectRadioButton;
 	}
 	
-/*	//Esto posiblemente sea mejor hacerlo con un action listener
-	private class acListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource() == setObstacleRadioButton){
-				floor.SetPointerOption(RealMap.OBSTACLE);
-			} else if (e.getSource() == eraseObjectRadioButton){
-				floor.SetPointerOption(RealMap.DIRTY);
-			} else if (e.getSource() == setVacuumRadioButton){
-				floor.SetPointerOption(RealMap.VACUUM);
-			}		
-		}
-		
-	}
-*/
 	public InternalMap getInternalMap() {
 		return internalMap;
 	}
