@@ -87,6 +87,7 @@ public class MapPanel extends JPanel {
 		int cellSpace = (int) Math.round(getCellPixelSize());
 		int pixelRowStart = 0;
 		int pixelColStart = 0;
+		boolean vacuumPainted;
 		
 		// First pixel coordinates
 		pixelRowStart = (int) ((getHeight() / 2) - ((int) cellSpace * (getnRows() / 2)));	
@@ -100,16 +101,27 @@ public class MapPanel extends JPanel {
 		// Cells
 		for (int i = 0; i < getnRows(); i++) {
 			for (int j = 0; j < getnCols(); j++) {
+				vacuumPainted = false;
+				
 				switch (getCells()[i][j]) {
 					case DIRTY: 	g.setColor(new Color(R_DIRTY, G_DIRTY, B_DIRTY)); break;
 					case CLEAN: 	g.setColor(CLEAN_CELL_COLOR); break;
 					case OBSTACLE: 	g.setColor(OBSTACLE_CELL_COLOR); break;
-					case VACUUM: 	g.setColor(getVacuumColor()); break;
+					case VACUUM: 	
+						g.setColor(getVacuumColor()); 
+						g.fillOval(pixelColStart + j * cellSpace, 
+								pixelRowStart + i * cellSpace, 
+								cellSpace, 
+								cellSpace);
+						vacuumPainted = true;
+						break;
 					case UNKNOWN: 	g.setColor(UNKNOWN_CELL_COLOR); break;
 				}
 				
-				g.fillRect(pixelColStart + j * cellSpace, pixelRowStart + i * cellSpace, 
-						cellSpace, cellSpace);
+				if (!vacuumPainted) {
+					g.fillRect(pixelColStart + j * cellSpace, pixelRowStart + i * cellSpace, 
+							cellSpace, cellSpace);
+				}
 			}
 		}
 		
