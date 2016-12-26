@@ -156,47 +156,10 @@ public class AppController {
 		 */
 		getControlPanel().getMapRows().addMouseListener(new ClearTextField());
 		getControlPanel().getMapCols().addMouseListener(new ClearTextField());
-		
-		
-		// TODO borrar esto
-		getControlPanel().getInternalMap().addMouseListener(new MouseListener() {
-
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				System.out.println("click!");
-				
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-		});
 	}
 	
 	/**
-	 * Determines what cell of the real map has been clicked
-	 * and paint the object on it.
+	 * Determines what cell of the real map has been clicked and paint the object on it.
 	 * 
 	 * @param pixelX
 	 * @param pixelY

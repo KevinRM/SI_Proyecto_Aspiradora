@@ -32,7 +32,7 @@ public class MainWindow extends JFrame {
 	private void initializeWindowComponents() {
 		setControlPanel(new ControlPanel());
 		setRealMap(new RealMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
-		getControlPanel().setInternalMap(new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
+		getControlPanel().updateInternalMap(new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
 		
 		getControlPanel().getMapRows().setText(String.valueOf(MAPS_DEFAULT_NROWS));
 		getControlPanel().getMapCols().setText(String.valueOf(MAPS_DEFAULT_NCOLS));

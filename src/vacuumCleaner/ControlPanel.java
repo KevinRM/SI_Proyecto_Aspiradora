@@ -5,10 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -47,6 +43,7 @@ public class ControlPanel extends JPanel {
 	private JButton startButton;
 	private JButton resetButton;
 	private InternalMap internalMap;
+	private JPanel outerInternalMapPanel;
 
 	public ControlPanel() {
 		setBackground(BACKGROUND_COLOR);
@@ -58,17 +55,17 @@ public class ControlPanel extends JPanel {
 		JPanel agentSettingsPanel = new JPanel();
 		JPanel drawSettingsPanel = new JPanel();
 		JPanel animationSettingsPanel = new JPanel();
-		JPanel internalMapPanel = new JPanel();
-		internalMapPanel.setLayout(new GridLayout(1, 1));
+		outerInternalMapPanel = new JPanel();
+		outerInternalMapPanel.setLayout(new GridLayout(1, 1));
 		internalMap = new InternalMap(INTERNALMAP_DEFAULT_NROWS, 
 											INTERNALMAP_DEFAULT_NCOLS);
-		internalMapPanel.setPreferredSize(new Dimension(150, 400));
-		internalMapPanel.add(internalMap);
+		outerInternalMapPanel.setPreferredSize(new Dimension(150, 400));
+		outerInternalMapPanel.add(internalMap);
 		
 		add(roomSettingsPanel);
 		add(agentSettingsPanel);
 		add(drawSettingsPanel);
-		add(internalMapPanel);
+		add(outerInternalMapPanel);
 		add(animationSettingsPanel);
 		
 		LineBorder lineBorderPanel = (LineBorder) BorderFactory.createLineBorder(Color.BLACK);
@@ -126,7 +123,7 @@ public class ControlPanel extends JPanel {
 
 		// InternalMap
 		Border internalMapPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Internal Map");
-		internalMapPanel.setBorder(internalMapPanelBorder);
+		outerInternalMapPanel.setBorder(internalMapPanelBorder);
 		
 		// Animation
 		Border animationSettingsPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Animation");		
@@ -170,6 +167,14 @@ public class ControlPanel extends JPanel {
 		sensorRange.setHorizontalAlignment(JTextField.RIGHT);
 	}
 
+	public void updateInternalMap(InternalMap newInternalMap) {
+		getOuterInternalMapPanel().removeAll();
+		setInternalMap(newInternalMap);
+		getOuterInternalMapPanel().add(newInternalMap);
+		getOuterInternalMapPanel().repaint();
+		newInternalMap.repaint();
+	}
+	
 	public Vacuum getVacuum() {
 		return vacuum;
 	}
@@ -280,5 +285,13 @@ public class ControlPanel extends JPanel {
 
 	public void setInternalMap(InternalMap internalMap) {
 		this.internalMap = internalMap;
+	}
+
+	public JPanel getOuterInternalMapPanel() {
+		return outerInternalMapPanel;
+	}
+
+	public void setOuterInternalMapPanel(JPanel outerInternalMapPanel) {
+		this.outerInternalMapPanel = outerInternalMapPanel;
 	}
 }
