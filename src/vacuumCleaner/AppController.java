@@ -75,6 +75,7 @@ public class AppController {
 			public void mouseClicked(MouseEvent e) {
 				paintTargetCellForRealMap(e.getX(), e.getY());
 				getRealMap().repaint();
+				getControlPanel().getInternalMap().repaint();
 			}
 		});
 		
@@ -86,6 +87,7 @@ public class AppController {
 			public void mouseDragged(MouseEvent e) {
 				paintTargetCellForRealMap(e.getX(), e.getY());
 				getRealMap().repaint();
+				getControlPanel().getInternalMap().repaint();
 			}
 
 			@Override
@@ -170,19 +172,25 @@ public class AppController {
 		
 		if ((rowClicked >= 0) && (rowClicked < getRealMap().getnRows()) &&
 				(colClicked >= 0) && colClicked < getRealMap().getnCols()) {
+			
 			if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
 				getRealMap().setObstacleAtPos(rowClicked, colClicked);
+				
 			} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
 				if (!getRealMap().isVacuumSet()) {
 					getRealMap().setVacuumAtPos(rowClicked, colClicked);
+					getControlPanel().getInternalMap().setVacuumAtPos(rowClicked, colClicked);
+					
 				} else {
 					JOptionPane.showMessageDialog(getControlPanel().getParent(), 
 							"A vacuum is already set on the map. ", 
 							"Warning", 
 							JOptionPane.INFORMATION_MESSAGE);
 				}
+				
 			} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
 				getRealMap().setDirtyCell(rowClicked, colClicked);
+				getControlPanel().getInternalMap().setUnknownCell(rowClicked, colClicked);
 			}
 		}
 	}
