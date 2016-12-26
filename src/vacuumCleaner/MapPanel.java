@@ -101,11 +101,11 @@ public class MapPanel extends JPanel {
 		for (int i = 0; i < getnRows(); i++) {
 			for (int j = 0; j < getnCols(); j++) {
 				switch (getCells()[i][j]) {
-					case DIRTY: g.setColor(new Color(R_DIRTY, G_DIRTY, B_DIRTY)); break;
-					case CLEAN: g.setColor(CLEAN_CELL_COLOR); break;
-					case OBSTACLE: g.setColor(OBSTACLE_CELL_COLOR); break;
-					case VACUUM: g.setColor(getVacuumColor()); break;
-					case UNKNOWN: g.setColor(UNKNOWN_CELL_COLOR); break;
+					case DIRTY: 	g.setColor(new Color(R_DIRTY, G_DIRTY, B_DIRTY)); break;
+					case CLEAN: 	g.setColor(CLEAN_CELL_COLOR); break;
+					case OBSTACLE: 	g.setColor(OBSTACLE_CELL_COLOR); break;
+					case VACUUM: 	g.setColor(getVacuumColor()); break;
+					case UNKNOWN: 	g.setColor(UNKNOWN_CELL_COLOR); break;
 				}
 				
 				g.fillRect(pixelColStart + j * cellSpace, pixelRowStart + i * cellSpace, 

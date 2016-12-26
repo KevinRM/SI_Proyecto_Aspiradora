@@ -12,9 +12,9 @@ import javax.swing.JFrame;
 public class MainWindow extends JFrame {
 	private static final int FRAME_WIDTH = 900;
 	private static final int FRAME_HEIGHT = 620;
-	private static final Color COLOR_BACKGROUND = Color.BLACK;
 	private static final int MAPS_DEFAULT_NROWS = 20;
 	private static final int MAPS_DEFAULT_NCOLS = 20;
+	private static final Color COLOR_BACKGROUND = Color.BLACK;
 	
 	private Vacuum vacuumCleaner;
 	private RealMap realMap;
@@ -22,8 +22,8 @@ public class MainWindow extends JFrame {
 	private AppController controller;
 	
 	public MainWindow() {
-		initializeWindowComponents();
 		buildWindow();
+		initializeWindowComponents();
 		
 		setLayout(new BorderLayout());
 		add(controlPanel, BorderLayout.WEST);

@@ -25,7 +25,10 @@ public class InternalMap extends MapPanel {
 		initializeUnknownCells();
 	}
 	
-
+	public void resizeMap(int newRows, int newCols) {
+		super.resizeMap(newRows, newCols);
+		initializeUnknownCells();
+	}
 	
 	/****************************************************
 	 *               Getters and Setters                *

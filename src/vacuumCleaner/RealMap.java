@@ -8,6 +8,15 @@ public class RealMap extends MapPanel {
 		setObstaculizedWalls();
 	}
 
+	public void resizeMap(int newRows, int newCols) {
+		super.resizeMap(newRows, newCols);
+		initializeDirtyCells();
+	}
+	
+	/**
+	 * Fills the walls with obstacles around the map.
+	 * KEVIN (BORRAR ESTA LÍNEA)
+	 */
 	private void setObstaculizedWalls() {
 		
 	}
@@ -15,41 +24,12 @@ public class RealMap extends MapPanel {
 	/**
 	 * Generates random obstacles through the map
 	 * given a percentage of randomness.
+	 * 
+	 * KEVIN (BORRAR ESTA LÍNEA)
 	 * @param rndPercentage
 	 */
 	public void generateObstaclesRandomly(int rndPercentage) {
-		
+		// ...
+		repaint();
 	}
-	
-	// mover este bloque de código a appcontroller.java
-	/*private class motionListener implements MouseMotionListener{
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			int eventX = (e.getX()-(zeroX))/cellSide;
-			int eventY = (e.getY()-(zeroY))/cellSide;
-			if (eventX < ncols && eventY < nrows){
-				if (pointerOption == VACUUM){
-					if (!vacuum){
-						cells[eventX][eventY] = pointerOption;
-						vacuum = true;
-					}
-				} else if (cells[eventX][eventY] == VACUUM && pointerOption != VACUUM){
-					cells[eventX][eventY] = pointerOption;
-					vacuum = false;
-				} else if (cells[eventX][eventY] != VACUUM && pointerOption != VACUUM){
-					cells[eventX][eventY] = pointerOption;
-				}
-				
-			}
-			repaint();
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void mouseMoved(MouseEvent e) {
-			// TODO Auto-generated method stub
-
-		}
-	}*/
 }

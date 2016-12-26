@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.JOptionPane;
 
@@ -40,6 +42,7 @@ public class AppController {
 						displayWrongNumberOfRowsOrColumnsDialog();
 					} else {
 						getRealMap().resizeMap(nrows, ncols);
+						// Llamada a la generación aleatoria de obstáculos
 					}
 		
 				} catch (NumberFormatException exception) {
@@ -49,25 +52,9 @@ public class AppController {
 		});
 		
 		/**
-		 * RealMap listener.
+		 * RealMap mouse's clicks listener.
 		 */
 		getRealMap().addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				int rowDragged = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
-				int colDragged = (e.getX() - getRealMap().getPixelColStart()) / getRealMap().getCellSpace();
-				
-				if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
-					getRealMap().setObstacleAtPos(rowDragged, colDragged);
-				} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
-					getRealMap().setVacuumAtPos(rowDragged, colDragged);
-				} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
-					getRealMap().setDirtyCell(rowDragged, colDragged);
-				}
-				
-				getRealMap().repaint();
-			}
-			
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int rowClicked = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
@@ -90,6 +77,28 @@ public class AppController {
 				
 				getRealMap().repaint();
 			}
+		});
+		
+		getRealMap().addMouseMotionListener(new MouseMotionListener() {
+
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int rowDragged = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
+				int colDragged = (e.getX() - getRealMap().getPixelColStart()) / getRealMap().getCellSpace();
+				
+				if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
+					getRealMap().setObstacleAtPos(rowDragged, colDragged);
+				} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
+					getRealMap().setVacuumAtPos(rowDragged, colDragged);
+				} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
+					getRealMap().setDirtyCell(rowDragged, colDragged);
+				}
+				
+				getRealMap().repaint();
+			}
+
+			@Override
+			public void mouseMoved(MouseEvent e) {}
 		});
 		
 		/**
