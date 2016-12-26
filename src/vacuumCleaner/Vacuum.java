@@ -8,7 +8,7 @@ import javax.swing.Timer;
 
 public class Vacuum {
 	private static final int DEFAULT_ANIMATION_TIME = 1000;
-	
+	private static final int DEFAULT_SENSOR_RANGE = 3;
 	
 	/**
 	 * NOTA: revisar código de esta clase
@@ -23,6 +23,7 @@ public class Vacuum {
 	private InternalMap internalMap;
 	private int animationTime;
 	private Timer animationTimer;
+	private int sensorRange;
 	
 	Vacuum(RealMap aRealMap, InternalMap anInternalMap) {
 		nrow = -1;
@@ -31,6 +32,7 @@ public class Vacuum {
 		internalMap = anInternalMap;
 		animationTime = DEFAULT_ANIMATION_TIME;
 		animationTimer = null;
+		sensorRange = DEFAULT_SENSOR_RANGE;
 	}
 
 	public void setNewPosition(int newRow, int newCol) {
@@ -38,6 +40,11 @@ public class Vacuum {
 		setnCol(newCol);
 	}
 	
+	/**
+	 * Applies a sensor operation so that the agent can see what elements are within its sensor range.
+	 * 
+	 * KEVIN (borrar esta línea)
+	 */
 	public void applyObstacleSensor() {
 		
 	}
@@ -79,10 +86,6 @@ public class Vacuum {
 			
 		}
 		
-		// Pintar las celdas que ve el sensor
-		for (int i = 0; i < xEmptyCells.size(); i++) {
-			floor.getCells()[yEmptyCells.get(i)][xEmptyCells.get(i)].setCleanCell();
-		}
 		*/
 	}
 

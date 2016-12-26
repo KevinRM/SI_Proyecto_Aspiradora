@@ -51,6 +51,7 @@ public class AppController {
 					int ncols = Integer.parseInt(getControlPanel().getMapCols().getText());
 					
 					// TO-DO manejar la cantidad de obstáculos aleatorios
+					// KEVIN (borrar estas líneas)
 					
 					if ((nrows < MIN_ROWSCOLS_NUM || ncols < MIN_ROWSCOLS_NUM) ||
 							(nrows > MAX_ROWSCOLS_NUM || ncols > MAX_ROWSCOLS_NUM)) {
@@ -59,6 +60,7 @@ public class AppController {
 						getRealMap().resizeMap(nrows, ncols);
 						getControlPanel().getInternalMap().resizeMap(nrows, ncols);
 						// TO-DO Llamada a la generación aleatoria de obstáculos
+						// KEVIN (borrar estas líneas)
 					}
 		
 				} catch (NumberFormatException exception) {
