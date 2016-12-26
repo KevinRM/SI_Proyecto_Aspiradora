@@ -18,6 +18,10 @@ public class AppController {
 	
 	private ControlPanel controlPanel;
 	private RealMap realMap;
+	
+	/**
+	 * The vacuum cleaner is instantiated in the controller.
+	 */
 	private Vacuum vacuumCleaner;
 	
 	public AppController(ControlPanel aControlPanel, RealMap aRealMap) {
@@ -179,6 +183,42 @@ public class AppController {
 		 */
 		getControlPanel().getMapRows().addMouseListener(new ClearTextField());
 		getControlPanel().getMapCols().addMouseListener(new ClearTextField());
+		
+		
+		// TODO borrar esto
+		getControlPanel().getInternalMap().addMouseListener(new MouseListener() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.out.println("click!");
+				
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+		});
 	}
 	
 	private void displayWrongNumberOfRowsOrColumnsDialog() {

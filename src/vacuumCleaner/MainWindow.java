@@ -3,9 +3,7 @@ package vacuumCleaner;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 
 import javax.swing.JFrame;
 
@@ -28,20 +26,16 @@ public class MainWindow extends JFrame {
 		add(controlPanel, BorderLayout.WEST);
 		add(realMap, BorderLayout.CENTER);
 		
-		getControlPanel().getInternalMap().repaint();
+		controller = new AppController(getControlPanel(), getRealMap());
 	}
 	
 	private void initializeWindowComponents() {
-		InternalMap internalMap = new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS);
-		ControlPanel controlPanel = new ControlPanel();
-		controlPanel.setInternalMap(internalMap);
-		
-		setControlPanel(controlPanel);
+		setControlPanel(new ControlPanel());
 		setRealMap(new RealMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
-		getControlPanel().setInternalMap(internalMap);
+		getControlPanel().setInternalMap(new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
+		
 		getControlPanel().getMapRows().setText(String.valueOf(MAPS_DEFAULT_NROWS));
 		getControlPanel().getMapCols().setText(String.valueOf(MAPS_DEFAULT_NCOLS));
-		setController(new AppController(controlPanel, getRealMap()));
 	}
 	
 	private void buildWindow() {
