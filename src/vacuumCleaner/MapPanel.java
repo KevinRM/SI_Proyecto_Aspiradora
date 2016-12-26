@@ -20,6 +20,10 @@ public class MapPanel extends JPanel {
 	private Color vacuumColor;
 	private boolean vacuumSet;
 	
+	private int cellSpace;
+	private int pixelRowStart;
+	private int pixelColStart;
+	
 	public MapPanel() {
 		
 	}
@@ -88,6 +92,11 @@ public class MapPanel extends JPanel {
 		pixelRowStart = (int) ((getHeight() / 2) - ((int) cellSpace * (getnRows() / 2)));	
 		pixelColStart = (int) ((getWidth() / 2) - ((int) cellSpace * (getnCols() / 2)));	
 		
+		// Store cells dimension info
+		setCellSpace(cellSpace);
+		setPixelRowStart(pixelRowStart);
+		setPixelColStart(pixelColStart);
+		
 		// Cells
 		for (int i = 0; i < getnRows(); i++) {
 			for (int j = 0; j < getnCols(); j++) {
@@ -119,9 +128,10 @@ public class MapPanel extends JPanel {
 		}
 	}
 	
-	public boolean setVacuumPos(int row, int col) {
+	public boolean setVacuumAtPos(int row, int col) {
 		if (!isVacuumSet()) {
 			getCells()[row][col] = CellState.VACUUM;
+			setVacuumSet(true);
 			return true;
 		} else {
 			return false;
@@ -257,5 +267,29 @@ public class MapPanel extends JPanel {
 
 	public void setVacuumSet(boolean vacuumSet) {
 		this.vacuumSet = vacuumSet;
+	}
+
+	public int getCellSpace() {
+		return cellSpace;
+	}
+
+	public void setCellSpace(int cellSpace) {
+		this.cellSpace = cellSpace;
+	}
+
+	public int getPixelRowStart() {
+		return pixelRowStart;
+	}
+
+	public void setPixelRowStart(int pixelRowStart) {
+		this.pixelRowStart = pixelRowStart;
+	}
+
+	public int getPixelColStart() {
+		return pixelColStart;
+	}
+
+	public void setPixelColStart(int pixelColStart) {
+		this.pixelColStart = pixelColStart;
 	}
 }

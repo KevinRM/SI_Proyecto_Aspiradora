@@ -2,6 +2,8 @@ package vacuumCleaner;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JOptionPane;
 
@@ -38,7 +40,6 @@ public class AppController {
 						displayWrongNumberOfRowsOrColumnsDialog();
 					} else {
 						getRealMap().resizeMap(nrows, ncols);
-						System.out.println("APPLY BUTTON IS PRESSED");
 					}
 		
 				} catch (NumberFormatException exception) {
@@ -47,7 +48,69 @@ public class AppController {
 			}
 		});
 		
+		/**
+		 * RealMap listener.
+		 */
+		getRealMap().addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				int rowDragged = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
+				int colDragged = (e.getX() - getRealMap().getPixelColStart()) / getRealMap().getCellSpace();
+				
+				if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
+					getRealMap().setObstacleAtPos(rowDragged, colDragged);
+				} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
+					getRealMap().setVacuumAtPos(rowDragged, colDragged);
+				} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
+					getRealMap().setDirtyCell(rowDragged, colDragged);
+				}
+				
+				getRealMap().repaint();
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int rowClicked = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
+				int colClicked = (e.getX() - getRealMap().getPixelColStart()) / getRealMap().getCellSpace();
+				
+				if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
+					getRealMap().setObstacleAtPos(rowClicked, colClicked);
+				} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
+					if (!getRealMap().isVacuumSet()) {
+						getRealMap().setVacuumAtPos(rowClicked, colClicked);
+					} else {
+						JOptionPane.showMessageDialog(getControlPanel().getParent(), 
+								"A vacuum is already set on the map. ", 
+								"Warning", 
+								JOptionPane.INFORMATION_MESSAGE);
+					}
+				} else if (getControlPanel().getEraseObjectRadioButton().isSelected()) {
+					getRealMap().setDirtyCell(rowClicked, colClicked);
+				}
+				
+				getRealMap().repaint();
+			}
+		});
 		
+		/**
+		 * START button listener.
+		 */
+		getControlPanel().getStartButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		
+		/**
+		 * RESET button listener.
+		 */
+		getControlPanel().getResetButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 	}
 	
 	private void displayWrongNumberOfRowsOrColumnsDialog() {
