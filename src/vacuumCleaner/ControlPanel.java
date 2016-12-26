@@ -96,8 +96,6 @@ public class ControlPanel extends JPanel {
 		panel3.add(Box.createRigidArea(new Dimension(TEXTFIELD_RIGHT_GAP, 0)));
 		JPanel panel4 = new JPanel();
 		roomSettingsPanel.add(panel4);
-		//applyButton.setBackground(Color.WHITE);
-		//applyButton.setForeground(Color.BLACK);
 		panel4.add(applyButton);
 
 		// Agent
@@ -140,10 +138,6 @@ public class ControlPanel extends JPanel {
 		speedSlider.setForeground(Color.WHITE);
 		panel5.add(speedSlider);
 		JPanel panel6 = new JPanel();
-		//startButton.setBackground(Color.WHITE);
-		//startButton.setForeground(Color.BLACK);
-		//resetButton.setBackground(Color.WHITE);
-		//resetButton.setForeground(Color.BLACK);
 		panel6.add(startButton);
 		panel6.add(resetButton);
 		animationSettingsPanel.add(panel6, BorderLayout.SOUTH);

@@ -128,6 +128,24 @@ public class MapPanel extends JPanel {
 		}
 	}
 	
+	public void changeVacuumColor(String newColor) {
+		if (newColor.equals("BLUE")) {
+			setVacuumColor(Color.BLUE);
+		} 
+		else if (newColor.equals("GREEN")) {
+			setVacuumColor(Color.GREEN);
+		} 
+		else if (newColor.equals("PINK")) {
+			setVacuumColor(Color.PINK);
+		} 
+		else if (newColor.equals("RED")) {
+			setVacuumColor(Color.RED);
+		} 
+		else {
+			System.out.println("Failed while changing vacuum color");
+		}
+	}
+	
 	public boolean setVacuumAtPos(int row, int col) {
 		if (!isVacuumSet()) {
 			getCells()[row][col] = CellState.VACUUM;

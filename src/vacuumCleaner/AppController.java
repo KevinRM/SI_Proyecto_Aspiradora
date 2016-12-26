@@ -10,6 +10,8 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JOptionPane;
 
 public class AppController {
+	private static final int SENSOR_RANGE_MIN_VALUE = 3;
+	private static final int SENSOR_RANGE_MAX_VALUE = 7;
 	private static final int MIN_ROWSCOLS_NUM = 10;
 	private static final int MAX_ROWSCOLS_NUM = 100;
 	
@@ -42,7 +44,7 @@ public class AppController {
 						displayWrongNumberOfRowsOrColumnsDialog();
 					} else {
 						getRealMap().resizeMap(nrows, ncols);
-						// Llamada a la generación aleatoria de obstáculos
+						// TO-DO Llamada a la generación aleatoria de obstáculos
 					}
 		
 				} catch (NumberFormatException exception) {
@@ -79,8 +81,10 @@ public class AppController {
 			}
 		});
 		
+		/**
+		 * MouseDragged listener for the real map.
+		 */
 		getRealMap().addMouseMotionListener(new MouseMotionListener() {
-
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				int rowDragged = (e.getY() - getRealMap().getPixelRowStart()) / getRealMap().getCellSpace();
@@ -107,7 +111,18 @@ public class AppController {
 		getControlPanel().getStartButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				try {
+					int sensorRange = Integer.parseInt(getControlPanel().getSensorRange().getText());
+					if ((sensorRange > SENSOR_RANGE_MAX_VALUE) || sensorRange < SENSOR_RANGE_MIN_VALUE) {
+						displayWrongValueForSensorRange();
+					} else {
+						// TO-DO comenzar la simulación
+						// Debería comprobarse también que la aspiradora esté colocada
+					}
+							
+				} catch (NumberFormatException exception) {
+					displayWrongValueForSensorRange();
+				}
 			}
 		});
 		
@@ -117,14 +132,43 @@ public class AppController {
 		getControlPanel().getResetButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				// TO-DO detener simulación
 			}
 		});
+		
+		/**
+		 * JComboxBox listener for changing the vacuum's color.
+		 */
+		getControlPanel().getVacuumColor().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String newVacuumColor = 
+						String.valueOf(getControlPanel().getVacuumColor().getSelectedItem());
+				getRealMap().changeVacuumColor(newVacuumColor);
+				getRealMap().repaint();
+			}
+		});
+		
+		/**
+		 * Setting tool tip for sensor range text field with allowed values.
+		 */
+		javax.swing.ToolTipManager.sharedInstance().setInitialDelay(0);
+		getControlPanel().getSensorRange().setToolTipText("Sensor range must be "
+				+ "a value between " + SENSOR_RANGE_MIN_VALUE + " and " + 
+				SENSOR_RANGE_MAX_VALUE + ". ");
 	}
 	
 	private void displayWrongNumberOfRowsOrColumnsDialog() {
 		JOptionPane.showMessageDialog(getControlPanel().getParent(), 
 				"Number of rows or columns is not correct (10-100). ", 
+				"Warning", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	private void displayWrongValueForSensorRange() {
+		JOptionPane.showMessageDialog(getControlPanel().getParent(), 
+				"The sensor range value must be between " + SENSOR_RANGE_MIN_VALUE + 
+				" and " + SENSOR_RANGE_MAX_VALUE + ". ", 
 				"Warning", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
