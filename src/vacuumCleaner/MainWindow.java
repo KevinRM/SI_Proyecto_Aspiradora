@@ -16,7 +16,6 @@ public class MainWindow extends JFrame {
 	private static final int MAPS_DEFAULT_NCOLS = 20;
 	private static final Color COLOR_BACKGROUND = Color.BLACK;
 	
-	private Vacuum vacuumCleaner;
 	private RealMap realMap;
 	private ControlPanel controlPanel;
 	private AppController controller;
@@ -28,14 +27,21 @@ public class MainWindow extends JFrame {
 		setLayout(new BorderLayout());
 		add(controlPanel, BorderLayout.WEST);
 		add(realMap, BorderLayout.CENTER);
+		
+		getControlPanel().getInternalMap().repaint();
 	}
 	
 	private void initializeWindowComponents() {
-		setControlPanel(new ControlPanel());
+		InternalMap internalMap = new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS);
+		ControlPanel controlPanel = new ControlPanel();
+		controlPanel.setInternalMap(internalMap);
+		
+		setControlPanel(controlPanel);
 		setRealMap(new RealMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
-		getControlPanel().setInternalMap(new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
-		setVacuumCleaner(new Vacuum(getRealMap(), getControlPanel().getInternalMap()));
-		setController(new AppController(getControlPanel(), getRealMap()));
+		getControlPanel().setInternalMap(internalMap);
+		getControlPanel().getMapRows().setText(String.valueOf(MAPS_DEFAULT_NROWS));
+		getControlPanel().getMapCols().setText(String.valueOf(MAPS_DEFAULT_NCOLS));
+		setController(new AppController(controlPanel, getRealMap()));
 	}
 	
 	private void buildWindow() {
@@ -46,14 +52,7 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
-	}
-
-	public Vacuum getVacuumCleaner() {
-		return vacuumCleaner;
-	}
-
-	public void setVacuumCleaner(Vacuum vacuumCleaner) {
-		this.vacuumCleaner = vacuumCleaner;
+		setLayout(new GridBagLayout());
 	}
 
 	public RealMap getRealMap() {

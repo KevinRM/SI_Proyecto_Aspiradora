@@ -8,6 +8,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 public class AppController {
 	private static final int SENSOR_RANGE_MIN_VALUE = 3;
@@ -17,14 +18,22 @@ public class AppController {
 	
 	private ControlPanel controlPanel;
 	private RealMap realMap;
+	private Vacuum vacuumCleaner;
 	
 	public AppController(ControlPanel aControlPanel, RealMap aRealMap) {
 		controlPanel = aControlPanel;
 		realMap = aRealMap;
+		vacuumCleaner = null;
 		
+		controlPanel.getInternalMap().repaint();
+		realMap.repaint();
 		initializeGUIComponentsHandlers();
 	}
 
+	public void initializeVacuumCleaner() {
+		
+	}
+	
 	private void initializeGUIComponentsHandlers() {
 		
 		/**
@@ -44,6 +53,7 @@ public class AppController {
 						displayWrongNumberOfRowsOrColumnsDialog();
 					} else {
 						getRealMap().resizeMap(nrows, ncols);
+						getControlPanel().getInternalMap().resizeMap(nrows, ncols);
 						// TO-DO Llamada a la generación aleatoria de obstáculos
 					}
 		
@@ -156,6 +166,19 @@ public class AppController {
 		getControlPanel().getSensorRange().setToolTipText("Sensor range must be "
 				+ "a value between " + SENSOR_RANGE_MIN_VALUE + " and " + 
 				SENSOR_RANGE_MAX_VALUE + ". ");
+		
+		class ClearTextField extends MouseAdapter {
+			@Override
+            public void mouseClicked(MouseEvent e){
+                ((JTextField) e.getSource()).setText("");
+            }
+		}
+		
+		/**
+		 * Listener for clearing text boxes for rows and columns when clicked.
+		 */
+		getControlPanel().getMapRows().addMouseListener(new ClearTextField());
+		getControlPanel().getMapCols().addMouseListener(new ClearTextField());
 	}
 	
 	private void displayWrongNumberOfRowsOrColumnsDialog() {

@@ -61,7 +61,7 @@ public class ControlPanel extends JPanel {
 		JPanel internalMapPanel = new JPanel();
 		internalMapPanel.setLayout(new GridLayout(1, 1));
 		internalMap = new InternalMap(INTERNALMAP_DEFAULT_NROWS, 
-												INTERNALMAP_DEFAULT_NCOLS);
+											INTERNALMAP_DEFAULT_NCOLS);
 		internalMapPanel.setPreferredSize(new Dimension(150, 400));
 		internalMapPanel.add(internalMap);
 		
@@ -70,7 +70,7 @@ public class ControlPanel extends JPanel {
 		add(drawSettingsPanel);
 		add(internalMapPanel);
 		add(animationSettingsPanel);
-
+		
 		LineBorder lineBorderPanel = (LineBorder) BorderFactory.createLineBorder(Color.BLACK);
 
 		// Room
@@ -127,7 +127,7 @@ public class ControlPanel extends JPanel {
 		// InternalMap
 		Border internalMapPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Internal Map");
 		internalMapPanel.setBorder(internalMapPanelBorder);
-
+		
 		// Animation
 		Border animationSettingsPanelBorder = BorderFactory.createTitledBorder(lineBorderPanel, "Animation");		
 		animationSettingsPanel.setBorder(animationSettingsPanelBorder);
@@ -141,8 +141,6 @@ public class ControlPanel extends JPanel {
 		panel6.add(startButton);
 		panel6.add(resetButton);
 		animationSettingsPanel.add(panel6, BorderLayout.SOUTH);
-		
-		internalMap.repaint();
 	}
 
 	private void initializeGUIComponents() {
