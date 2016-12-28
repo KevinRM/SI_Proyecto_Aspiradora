@@ -12,6 +12,7 @@ public class MainWindow extends JFrame {
 	private static final int FRAME_HEIGHT = 620;
 	private static final int MAPS_DEFAULT_NROWS = 20;
 	private static final int MAPS_DEFAULT_NCOLS = 20;
+	private static final int MAP_DEFAULT_P_OBSTACLES = 0;
 	private static final Color COLOR_BACKGROUND = Color.BLACK;
 	
 	private RealMap realMap;
@@ -36,6 +37,7 @@ public class MainWindow extends JFrame {
 		
 		getControlPanel().getMapRows().setText(String.valueOf(MAPS_DEFAULT_NROWS));
 		getControlPanel().getMapCols().setText(String.valueOf(MAPS_DEFAULT_NCOLS));
+		getControlPanel().getRndObstaclesPercentage().setText(String.valueOf(MAP_DEFAULT_P_OBSTACLES));
 	}
 	
 	private void buildWindow() {

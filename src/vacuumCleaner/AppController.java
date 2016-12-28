@@ -15,6 +15,8 @@ public class AppController {
 	private static final int SENSOR_RANGE_MAX_VALUE = 7;
 	private static final int MIN_ROWSCOLS_NUM = 10;
 	private static final int MAX_ROWSCOLS_NUM = 100;
+	private static final int MIN_PERCENTAGE_OBS = 0;
+	private static final int MAX_PERCENTAGE_OBS = 99;
 	
 	private ControlPanel controlPanel;
 	private RealMap realMap;
@@ -27,7 +29,7 @@ public class AppController {
 	public AppController(ControlPanel aControlPanel, RealMap aRealMap) {
 		controlPanel = aControlPanel;
 		realMap = aRealMap;
-		vacuumCleaner = null;
+		vacuumCleaner = new Vacuum(realMap, controlPanel.getInternalMap());
 		
 		controlPanel.getInternalMap().repaint();
 		realMap.repaint();
@@ -50,21 +52,27 @@ public class AppController {
 					int nrows = Integer.parseInt(getControlPanel().getMapRows().getText());
 					int ncols = Integer.parseInt(getControlPanel().getMapCols().getText());
 					
-					// TO-DO manejar la cantidad de obstáculos aleatorios
-					// KEVIN (borrar estas líneas)
-					
 					if ((nrows < MIN_ROWSCOLS_NUM || ncols < MIN_ROWSCOLS_NUM) ||
 							(nrows > MAX_ROWSCOLS_NUM || ncols > MAX_ROWSCOLS_NUM)) {
 						displayWrongNumberOfRowsOrColumnsDialog();
 					} else {
 						getRealMap().resizeMap(nrows, ncols);
 						getControlPanel().getInternalMap().resizeMap(nrows, ncols);
-						// TO-DO Llamada a la generación aleatoria de obstáculos
-						// KEVIN (borrar estas líneas)
 					}
-		
 				} catch (NumberFormatException exception) {
 					displayWrongNumberOfRowsOrColumnsDialog();
+				}
+				
+				try {
+					int percentageObs = Integer.parseInt(getControlPanel().getRndObstaclesPercentage().getText());
+					
+					if (percentageObs < MIN_PERCENTAGE_OBS || percentageObs > MAX_PERCENTAGE_OBS) {
+						displayWrongValueForPercentageObstacle();
+					} else {
+						getRealMap().generateObstaclesRandomly(percentageObs);
+					}
+				} catch (NumberFormatException exception) {
+					displayWrongValueForPercentageObstacle();
 				}
 			}
 		});
@@ -107,6 +115,8 @@ public class AppController {
 					if ((sensorRange > SENSOR_RANGE_MAX_VALUE) || sensorRange < SENSOR_RANGE_MIN_VALUE) {
 						displayWrongValueForSensorRange();
 					} else {
+						getVacuum().setSensorRange(sensorRange);
+						getVacuum().applyObstacleSensor(getRealMap().getPixelRowStart(), getRealMap().getPixelColStart(), getRealMap().getCellSpace());
 						// TO-DO comenzar la simulación
 						// Debería comprobarse también que la aspiradora esté colocada
 					}
@@ -160,6 +170,7 @@ public class AppController {
 		 */
 		getControlPanel().getMapRows().addMouseListener(new ClearTextField());
 		getControlPanel().getMapCols().addMouseListener(new ClearTextField());
+		getControlPanel().getRndObstaclesPercentage().addMouseListener(new ClearTextField());
 	}
 	
 	/**
@@ -182,6 +193,7 @@ public class AppController {
 				if (!getRealMap().isVacuumSet()) {
 					getRealMap().setVacuumAtPos(rowClicked, colClicked);
 					getControlPanel().getInternalMap().setVacuumAtPos(rowClicked, colClicked);
+					getVacuum().setNewPosition(rowClicked, colClicked);
 					
 				} else {
 					JOptionPane.showMessageDialog(getControlPanel().getParent(), 
@@ -212,6 +224,14 @@ public class AppController {
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	private void displayWrongValueForPercentageObstacle() {
+		JOptionPane.showMessageDialog(getControlPanel().getParent(), 
+				"The percentage obstacle value must be between " + MIN_PERCENTAGE_OBS + 
+				" and " + MAX_PERCENTAGE_OBS + ". ", 
+				"Warning", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 	public ControlPanel getControlPanel() {
 		return controlPanel;
 	}
@@ -226,5 +246,9 @@ public class AppController {
 
 	public void setRealMap(RealMap realMap) {
 		this.realMap = realMap;
+	}
+	
+	public Vacuum getVacuum() {
+		return vacuumCleaner;
 	}
 }

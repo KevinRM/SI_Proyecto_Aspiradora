@@ -2,6 +2,9 @@ package vacuumCleaner;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -23,6 +26,8 @@ public class MapPanel extends JPanel {
 	private int cellSpace;
 	private int pixelRowStart;
 	private int pixelColStart;
+	
+	private int x1LineSensor, y1LineSensor, x2LineSensor, y2LineSensor = 0;
 	
 	public MapPanel() {
 		
@@ -82,6 +87,14 @@ public class MapPanel extends JPanel {
 		return -1;
 	}
 	
+	public void drawLineSensor(int x1, int y1, int x2, int y2) {
+		x1LineSensor = x1;
+		y1LineSensor = y1;
+		x2LineSensor = x2;
+		y2LineSensor = y2;
+		repaint();
+	}
+	
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int cellSpace = (int) Math.round(getCellPixelSize());
@@ -138,6 +151,10 @@ public class MapPanel extends JPanel {
 			g.drawLine(pixelColStart + j * cellSpace, pixelRowStart, pixelColStart + j * cellSpace, 
 					pixelRowStart + getnRows() * cellSpace);
 		}
+		
+		// Line sensor
+		g.setColor(Color.RED);
+		g.drawLine(x1LineSensor, y1LineSensor, x2LineSensor, y2LineSensor);
 	}
 	
 	public void changeVacuumColor(String newColor) {
@@ -174,6 +191,7 @@ public class MapPanel extends JPanel {
 		}
 		
 		getCells()[row][col] = CellState.OBSTACLE;
+		repaint();
 	}
 	
 	public void setCleanCell(int row, int col) {
@@ -189,6 +207,7 @@ public class MapPanel extends JPanel {
 		}
 		
 		getCells()[row][col] = CellState.DIRTY;
+		repaint();
 	}
 	
 	public void setUnknownCell(int row, int col) {
