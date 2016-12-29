@@ -24,6 +24,6 @@ public class Main {
 		    }
 
 			//Create and show the GUI.
-		    new MainWindow();
+		    new Main();
 		}
 }
