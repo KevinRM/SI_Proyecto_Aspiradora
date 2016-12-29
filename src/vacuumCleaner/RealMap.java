@@ -31,8 +31,7 @@ public class RealMap extends MapPanel {
 	}
 	
 	/**
-	 * Generates random obstacles through the map
-	 * given a percentage of randomness.
+	 * Generates random obstacles through the map given a percentage of randomness.
 	 * 
 	 * @param rndPercentage
 	 */

@@ -162,46 +162,6 @@ public class Vacuum {
 		});
 		timerSensor.start();
 	}
-	
-	// este metodo borrarlo... todavía no
-	public void getSensorParameters() {
-	/*	ArrayList<Integer> xEmptyCells = new ArrayList<Integer>();
-		ArrayList<Integer> yEmptyCells = new ArrayList<Integer>();
-		ArrayList<Integer> xObstacleCells = new ArrayList<Integer>();
-		ArrayList<Integer> yObstacleCells = new ArrayList<Integer>(); 
-		
-		// Centros del radio de sensado
-		int xCenter = getColPos();
-		int yCenter = getRowPos();
-		
-		// El radio del sensado puede ser variable
-		int sensorRadius = 7;
-		
-		// Realizar un sensado en redondo
-		for (int x = 0; x < getFloor().getNumberColumns(); x++) {
-			for (int y = 0; y < getFloor().getNumberRows(); y++) {
-				if ((x - xCenter) * (x - xCenter) + (y - yCenter) * (y - yCenter) < sensorRadius * sensorRadius) {
-					// Si no es una posición obstaculizada
-					if (!getFloor().obstaculizedCell(y, x)) {
-						xEmptyCells.add(x);
-						yEmptyCells.add(y);
-					// Guardar la posición de los obstáculos
-					} else {
-						xObstacleCells.add(x);
-						yObstacleCells.add(y);
-					}
-				}
-			}
-		}
-		
-		int xVacuumCell = getFloor().getCells()[yCenter][xCenter].getWidth() / 2;
-		int yVacuumCell = getFloor().getCells()[yCenter][xCenter].getHeight() / 2;
-		for (int i = 0; i < xObstacleCells.size(); i++) {
-			
-		}
-		
-		*/
-	}
 
 	/****************************************************
 	 *               Getters and Setters                *
@@ -297,5 +257,13 @@ public class Vacuum {
 	
 	public void setSectorToExplore(int val) {
 		sectorExplore = val;
+	}
+
+	public Timer getTimerSensor() {
+		return timerSensor;
+	}
+
+	public void setTimerSensor(Timer timerSensor) {
+		this.timerSensor = timerSensor;
 	}
 }
