@@ -88,7 +88,7 @@ public class ControlPanel extends JPanel {
 		JPanel panel3 = new JPanel();
 		panel3.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		roomSettingsPanel.add(panel3);
-		panel3.add(new JLabel("Random obstacles percent (0-99) :"));
+		panel3.add(new JLabel("Random obstacles % (0-99) :"));
 		panel3.add(rndObstaclesPercentage);
 		panel3.add(Box.createRigidArea(new Dimension(TEXTFIELD_RIGHT_GAP, 0)));
 		JPanel panel4 = new JPanel();

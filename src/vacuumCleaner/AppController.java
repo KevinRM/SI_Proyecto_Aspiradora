@@ -194,7 +194,9 @@ public class AppController {
 				(colClicked >= 0) && colClicked < getRealMap().getnCols()) {
 			
 			if (getControlPanel().getSetObstacleRadioButton().isSelected()) {
-				getRealMap().setObstacleAtPos(rowClicked, colClicked);
+				if (!getRealMap().isVacuum(rowClicked, colClicked)) {
+					getRealMap().setObstacleAtPos(rowClicked, colClicked);
+				}
 				
 			} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
 				if (!getRealMap().isVacuumSet()) {
