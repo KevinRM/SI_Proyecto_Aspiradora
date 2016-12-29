@@ -198,10 +198,12 @@ public class AppController {
 				
 			} else if (getControlPanel().getSetVacuumRadioButton().isSelected()) {
 				if (!getRealMap().isVacuumSet()) {
-					getRealMap().setVacuumAtPos(rowClicked, colClicked);
-					getControlPanel().getInternalMap().setVacuumAtPos(rowClicked, colClicked);
-					getVacuum().setNewPosition(rowClicked, colClicked);
-					
+					// Vacuum cleaner is set just on a free cell
+					if (!getRealMap().isObstacle(rowClicked, colClicked)) {
+						getRealMap().setVacuumAtPos(rowClicked, colClicked);
+						getControlPanel().getInternalMap().setVacuumAtPos(rowClicked, colClicked);
+						getVacuum().setNewPosition(rowClicked, colClicked);
+					}
 				} else {
 					JOptionPane.showMessageDialog(getControlPanel().getParent(), 
 							"A vacuum is already set on the map. ", 
