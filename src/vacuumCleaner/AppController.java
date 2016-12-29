@@ -133,6 +133,14 @@ public class AppController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TO-DO detener simulación
+				
+				// Reset the maps
+				int currentnRows = getRealMap().getnRows();
+				int currentnCols = getRealMap().getnCols();
+				getRealMap().resizeMap(currentnRows, currentnCols);
+				getControlPanel().getInternalMap().resizeMap(currentnRows, currentnCols);
+				getRealMap().repaint();
+				getControlPanel().getInternalMap().repaint();
 			}
 		});
 		

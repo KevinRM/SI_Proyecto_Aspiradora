@@ -54,6 +54,7 @@ public class MapPanel extends JPanel {
 	 * Initialize all the cells as unknown.
 	 */
 	protected void initializeUnknownCells() {
+		setVacuumSet(false);
 		for (int i = 0; i < getnRows(); i++) {
 			for (int j = 0; j < getnCols(); j++) {
 				getCells()[i][j] = CellState.UNKNOWN;
@@ -65,6 +66,7 @@ public class MapPanel extends JPanel {
 	 * Initialize all the cells as dirty.
 	 */
 	protected void initializeDirtyCells() {
+		setVacuumSet(false);
 		for (int i = 0; i < getnRows(); i++) {
 			for (int j = 0; j < getnCols(); j++) {
 				getCells()[i][j] = CellState.DIRTY;
