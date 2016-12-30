@@ -13,9 +13,9 @@ public class AppController {
 	private static final int SENSOR_RANGE_MIN_VALUE = 3;
 	private static final int SENSOR_RANGE_MAX_VALUE = 7;
 	private static final int MIN_ROWSCOLS_NUM = 10;
-	private static final int MAX_ROWSCOLS_NUM = 100;
+	private static final int MAX_ROWSCOLS_NUM = 70;
 	private static final int MIN_PERCENTAGE_OBS = 0;
-	private static final int MAX_PERCENTAGE_OBS = 99;
+	private static final int MAX_PERCENTAGE_OBS = 50;
 	
 	private ControlPanel controlPanel;
 	private RealMap realMap;

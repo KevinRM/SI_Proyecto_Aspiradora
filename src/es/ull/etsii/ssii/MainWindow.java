@@ -13,6 +13,7 @@ public class MainWindow extends JFrame {
 	private static final int MAPS_DEFAULT_NROWS = 20;
 	private static final int MAPS_DEFAULT_NCOLS = 20;
 	private static final int MAP_DEFAULT_P_OBSTACLES = 0;
+	private static final int DEFAULT_SENSOR_RANGE = 3;
 	private static final Color COLOR_BACKGROUND = Color.BLACK;
 	
 	private RealMap realMap;
@@ -35,9 +36,13 @@ public class MainWindow extends JFrame {
 		setRealMap(new RealMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
 		getControlPanel().updateInternalMap(new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
 		
+		/**
+		 * Setting default parameters in the GUI.
+		 */
 		getControlPanel().getMapRows().setText(String.valueOf(MAPS_DEFAULT_NROWS));
 		getControlPanel().getMapCols().setText(String.valueOf(MAPS_DEFAULT_NCOLS));
 		getControlPanel().getRndObstaclesPercentage().setText(String.valueOf(MAP_DEFAULT_P_OBSTACLES));
+		getControlPanel().getSensorRange().setText(String.valueOf(DEFAULT_SENSOR_RANGE));
 	}
 	
 	private void buildWindow() {
