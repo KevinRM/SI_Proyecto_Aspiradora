@@ -1,4 +1,4 @@
-package vacuumCleaner;
+package es.ull.etsii.ssii;
 
 public class InternalMap extends MapPanel {
 	

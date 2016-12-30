@@ -1,4 +1,4 @@
-package vacuumCleaner;
+package es.ull.etsii.ssii;
 
 import java.awt.Color;
 import java.awt.Graphics;

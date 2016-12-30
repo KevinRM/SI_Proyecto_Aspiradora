@@ -1,4 +1,4 @@
-package vacuumCleaner;
+package es.ull.etsii.ssii;
 
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;

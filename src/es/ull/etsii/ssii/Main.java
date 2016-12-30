@@ -1,4 +1,4 @@
-package vacuumCleaner;
+package es.ull.etsii.ssii;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;

@@ -1,4 +1,4 @@
-package vacuumCleaner;
+package es.ull.etsii.ssii;
 
 import java.util.ArrayList;
 import java.util.Random;
