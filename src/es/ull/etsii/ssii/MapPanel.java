@@ -34,6 +34,7 @@ public class MapPanel extends JPanel {
 	private int y1LineSensor;
 	private int x2LineSensor;
 	private int y2LineSensor;
+	private boolean paintLineSensor = false;
 	
 	public MapPanel() {
 		nrows = 0;
@@ -117,12 +118,18 @@ public class MapPanel extends JPanel {
 		return -1;
 	}
 	
-	public void drawLineSensor(int x1, int y1, int x2, int y2) {
-		x1LineSensor = x1;
-		y1LineSensor = y1;
-		x2LineSensor = x2;
-		y2LineSensor = y2;
-		repaint();
+	public void drawLineSensor(boolean end, int x1, int y1, int x2, int y2) {
+		if (end) {	// Clear red point of laser
+			setPaintLineSensor(false);
+			repaint();
+		} else {
+			setPaintLineSensor(true);
+			x1LineSensor = x1;
+			y1LineSensor = y1;
+			x2LineSensor = x2;
+			y2LineSensor = y2;
+			repaint();
+		}
 	}
 	
 	protected void paintComponent(Graphics g) {
@@ -182,8 +189,10 @@ public class MapPanel extends JPanel {
 		}
 		
 		// Line sensor
-		g.setColor(Color.RED);
-		g.drawLine(x1LineSensor, y1LineSensor, x2LineSensor, y2LineSensor);
+		if (getPaintLineSensor()) {
+			g.setColor(Color.RED);
+			g.drawLine(x1LineSensor, y1LineSensor, x2LineSensor, y2LineSensor);
+		}
 	}
 	
 	public void changeVacuumColor(String newColor) {
@@ -369,5 +378,13 @@ public class MapPanel extends JPanel {
 
 	public void setPixelColStart(int pixelColStart) {
 		this.pixelColStart = pixelColStart;
+	}
+	
+	public boolean getPaintLineSensor() {
+		return paintLineSensor;
+	}
+	
+	public void setPaintLineSensor(boolean val) {
+		paintLineSensor = val;
 	}
 }

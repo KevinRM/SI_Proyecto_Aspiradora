@@ -55,6 +55,7 @@ public class Vacuum {
 	public void applyObstacleSensor(int pixelRowStart, int pixelColStart, int cellSpace) {
 		timerSensor = new Timer(50, new ActionListener () {
 		    public void actionPerformed(ActionEvent e) {
+		    	boolean isEnd = false;
 				switch (getSectorToExplore()) {
 				case 0: {
 					if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
@@ -114,52 +115,62 @@ public class Vacuum {
 				} break;
 				case 4: {
 					setSectorToExplore(0);
-					timerSensor.stop();
+					isEnd = true;
+					getTimerSensor().stop();
 				} break;
 				}
 				
-				int xPosOriginSensor = (pixelColStart + getnCol() * cellSpace) + cellSpace / 2;
-				int yPosOriginSensor = (pixelRowStart + getnRow() * cellSpace) + cellSpace / 2;
-				int xPosDestinySensor = xPosOriginSensor + (getYToModifyOriginSensor() * cellSpace);
-				int yPosDestinySensor = yPosOriginSensor + (getXToModifyOriginSensor() * cellSpace);
-				getRealMap().drawLineSensor(xPosOriginSensor, yPosOriginSensor, xPosDestinySensor, yPosDestinySensor);
-				
-				BufferedImage image = new BufferedImage(getRealMap().getWidth(), getRealMap().getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-				Graphics2D g2 = image.createGraphics();
-				getRealMap().paint(g2);
-				
-				for (int i = 0; i < getObstaclesDetected().size(); i++) {
-					Integer[] obstacle = getObstaclesDetected().get(i);
+				if (!isEnd) {
+					int xPosOriginSensor = (pixelColStart + getnCol() * cellSpace) + cellSpace / 2;
+					int yPosOriginSensor = (pixelRowStart + getnRow() * cellSpace) + cellSpace / 2;
+					int xPosDestinySensor = xPosOriginSensor + (getYToModifyOriginSensor() * cellSpace);
+					int yPosDestinySensor = yPosOriginSensor + (getXToModifyOriginSensor() * cellSpace);
+					int rowDestiny = getnRow() + getXToModifyOriginSensor();
+					int colDestiny = getnCol() + getYToModifyOriginSensor();
 					
-					for (int j = 0; j < cellSpace; j++) {
-						for (int k = 0; k < cellSpace; k++) {		
-							int xPixel = (pixelColStart + k) + obstacle[1] * cellSpace;
-							int yPixel = (pixelRowStart + j) + obstacle[0] * cellSpace;
-							int color = image.getRGB(xPixel, yPixel);
-							if (((color & 0x00ff0000) >> 16) == 255) {	// Detect RED of sensor
-								setSensorCollisionObstacle(true);
+					if (rowDestiny >= 0 && rowDestiny < getRealMap().getNrows() && colDestiny >= 0 && colDestiny < getRealMap().getNcols()) {
+						getRealMap().drawLineSensor(false, xPosOriginSensor, yPosOriginSensor, xPosDestinySensor, yPosDestinySensor);
+						
+						BufferedImage image = new BufferedImage(getRealMap().getWidth(), getRealMap().getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+						Graphics2D g2 = image.createGraphics();
+						getRealMap().paint(g2);
+						
+						for (int i = 0; i < getObstaclesDetected().size(); i++) {
+							Integer[] obstacle = getObstaclesDetected().get(i);
+							
+							for (int j = 0; j < cellSpace; j++) {
+								for (int k = 0; k < cellSpace; k++) {		
+									int xPixel = (pixelColStart + k) + obstacle[1] * cellSpace;
+									int yPixel = (pixelRowStart + j) + obstacle[0] * cellSpace;
+									int color = image.getRGB(xPixel, yPixel);
+									if (((color & 0x00ff0000) >> 16) == 255) {	// Detect RED of sensor
+										setSensorCollisionObstacle(true);
+									}
+								}
 							}
 						}
+						g2.dispose();
+						
+						int xPosCellExplore = getnRow() + getXToModifyOriginSensor();
+						int yPosCellExplore = getnCol() + getYToModifyOriginSensor();
+						
+						if (getSensorCollisionObstacle()) {
+							setSensorCollisionObstacle(false);
+							
+						} else if (getRealMap().isObstacle(xPosCellExplore, yPosCellExplore)) {
+							getObstaclesDetected().add(new Integer[]{xPosCellExplore, yPosCellExplore});
+							getInternalMap().setObstacleAtPos(xPosCellExplore, yPosCellExplore);
+							
+						} else if (getXToModifyOriginSensor() != 0 || getYToModifyOriginSensor() != 0) {
+							getInternalMap().setDirtyCell(xPosCellExplore, yPosCellExplore);
+						}
 					}
-				}
-				g2.dispose();
-				
-				int xPosCellExplore = getnRow() + getXToModifyOriginSensor();
-				int yPosCellExplore = getnCol() + getYToModifyOriginSensor();
-				
-				if (getRealMap().isObstacle(xPosCellExplore, yPosCellExplore)) {
-					getObstaclesDetected().add(new Integer[]{xPosCellExplore, yPosCellExplore});
-					getInternalMap().setObstacleAtPos(xPosCellExplore, yPosCellExplore);
-					
-				} else if (getSensorCollisionObstacle()) {
-					setSensorCollisionObstacle(false);
-					
-				} else if (getXToModifyOriginSensor() != 0 || getYToModifyOriginSensor() != 0) {
-					getInternalMap().setDirtyCell(xPosCellExplore, yPosCellExplore);
+				} else {
+					getRealMap().drawLineSensor(true, 0, 0, 0, 0);
 				}
 		    }
 		});
-		timerSensor.start();
+		getTimerSensor().start();
 	}
 
 	/****************************************************
