@@ -119,14 +119,13 @@ public class MapPanel extends JPanel {
 					case DIRTY: 	g.setColor(new Color(R_DIRTY, G_DIRTY, B_DIRTY)); break;
 					case CLEAN: 	g.setColor(CLEAN_CELL_COLOR); break;
 					case OBSTACLE: 	g.setColor(OBSTACLE_CELL_COLOR); break;
-					case VACUUM: 	
-						g.setColor(getVacuumColor()); 
-						g.fillOval(pixelColStart + j * cellSpace, 
-								pixelRowStart + i * cellSpace, 
-								cellSpace, 
-								cellSpace);
-						vacuumPainted = true;
-						break;
+					case VACUUM: 	g.setColor(getVacuumColor()); 
+									g.fillOval(pixelColStart + j * cellSpace, 
+											pixelRowStart + i * cellSpace, 
+											cellSpace, 
+											cellSpace);
+									vacuumPainted = true;
+									break;
 					case UNKNOWN: 	g.setColor(UNKNOWN_CELL_COLOR); break;
 				}
 				
