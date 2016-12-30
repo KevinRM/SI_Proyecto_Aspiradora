@@ -20,14 +20,36 @@ public class MapPanel extends JPanel {
 	private Color vacuumColor;
 	private boolean vacuumSet;
 	
+	/**
+	 * Info about how the map will be painted.
+	 */
 	private int cellSpace;
 	private int pixelRowStart;
 	private int pixelColStart;
 	
-	private int x1LineSensor, y1LineSensor, x2LineSensor, y2LineSensor = 0;
+	/**
+	 * Info about how the line sensor will be painted.
+	 */
+	private int x1LineSensor;
+	private int y1LineSensor;
+	private int x2LineSensor;
+	private int y2LineSensor;
 	
 	public MapPanel() {
+		nrows = 0;
+		ncols = 0;
+		cells = null;
+		vacuumColor = VACUUM_DEFAULT_COLOR;
+		vacuumSet = false;
+	
+		cellSpace = 0;
+		pixelRowStart = 0;
+		pixelColStart = 0;
 		
+		x1LineSensor = 0;
+		y1LineSensor = 0;
+		x2LineSensor = 0;
+		y2LineSensor = 0;
 	}
 	
 	public MapPanel(int rows, int cols) {
@@ -36,6 +58,15 @@ public class MapPanel extends JPanel {
 		cells = new CellState[rows][cols];
 		vacuumColor = VACUUM_DEFAULT_COLOR;
 		vacuumSet = false;
+		
+		cellSpace = 0;
+		pixelRowStart = 0;
+		pixelColStart = 0;
+		
+		x1LineSensor = 0;
+		y1LineSensor = 0;
+		x2LineSensor = 0;
+		y2LineSensor = 0;
 	}
 	
 	public void resizeMap(int newRows, int newCols) {
