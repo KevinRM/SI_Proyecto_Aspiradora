@@ -165,6 +165,11 @@ public class ControlPanel extends JPanel {
 		mapCols.setHorizontalAlignment(JTextField.RIGHT);
 		rndObstaclesPercentage.setHorizontalAlignment(JTextField.RIGHT);
 		sensorRange.setHorizontalAlignment(JTextField.RIGHT);
+		
+		applyButton.setFocusPainted(false);
+		startButton.setFocusPainted(false);
+		resetButton.setFocusPainted(false);
+		//speedSlider.setFocusPainted(false);
 	}
 
 	public void updateInternalMap(InternalMap newInternalMap) {

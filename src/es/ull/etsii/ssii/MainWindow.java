@@ -21,24 +21,36 @@ public class MainWindow extends JFrame {
 	private AppController controller;
 	
 	public MainWindow() {
-		buildWindow();
 		initializeWindowComponents();
-		
 		setLayout(new BorderLayout());
 		add(controlPanel, BorderLayout.WEST);
 		add(realMap, BorderLayout.CENTER);
-		
-		controller = new AppController(getControlPanel(), getRealMap());
+		buildWindow();
 	}
 	
 	private void initializeWindowComponents() {
+		initializeGraphicalElements();
+		initializeController();
+		setDefaultGUIValues();
+	}
+
+	/**
+	 * Initializes the control and map panels with their default values.
+	 */
+	private void initializeGraphicalElements() {
 		setControlPanel(new ControlPanel());
 		setRealMap(new RealMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
 		getControlPanel().updateInternalMap(new InternalMap(MAPS_DEFAULT_NROWS, MAPS_DEFAULT_NCOLS));
-		
-		/**
-		 * Setting default parameters in the GUI.
-		 */
+	}
+	
+	private void initializeController() {
+		setController(new AppController(getControlPanel(), getRealMap()));
+	}
+	
+	/**
+	 * Sets default parameters in the GUI.
+	 */
+	private void setDefaultGUIValues() {
 		getControlPanel().getMapRows().setText(String.valueOf(MAPS_DEFAULT_NROWS));
 		getControlPanel().getMapCols().setText(String.valueOf(MAPS_DEFAULT_NCOLS));
 		getControlPanel().getRndObstaclesPercentage().setText(String.valueOf(MAP_DEFAULT_P_OBSTACLES));
@@ -53,7 +65,6 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		setLayout(new GridBagLayout());
 	}
 
 	public RealMap getRealMap() {
