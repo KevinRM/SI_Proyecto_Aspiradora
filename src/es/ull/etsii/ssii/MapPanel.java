@@ -2,6 +2,7 @@ package es.ull.etsii.ssii;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 
 import javax.swing.JPanel;
 
@@ -19,6 +20,7 @@ public class MapPanel extends JPanel {
 	private CellState[][] cells;
 	private Color vacuumColor;
 	private boolean vacuumSet;
+	
 	
 	/**
 	 * Info about how the map will be painted.
@@ -216,6 +218,7 @@ public class MapPanel extends JPanel {
 	public boolean setVacuumAtPos(int row, int col) {
 		if (!isVacuumSet()) {
 			getCells()[row][col] = CellState.VACUUM;
+			//vacuumPos = new Point (col, row);
 			setVacuumSet(true);
 			return true;
 		} else {
@@ -294,6 +297,17 @@ public class MapPanel extends JPanel {
 		} else {
 			return false;
 		}
+	}
+	
+	public boolean dirtyAreas (){
+		for (int i = 0; i < getnRows(); i++ ){
+			for (int j = 0; j < getnCols(); j++){
+				if (isDirty(i,j)){
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 	
 	/****************************************************

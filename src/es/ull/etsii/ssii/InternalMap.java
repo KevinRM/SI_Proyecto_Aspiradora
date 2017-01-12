@@ -11,4 +11,8 @@ public class InternalMap extends MapPanel {
 		super.resizeMap(newRows, newCols);
 		initializeUnknownCells();
 	}
+	
+	public boolean dirtyAreas(){
+		return super.dirtyAreas();
+	}
 }
