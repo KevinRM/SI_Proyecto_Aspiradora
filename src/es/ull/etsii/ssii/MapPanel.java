@@ -310,6 +310,27 @@ public class MapPanel extends JPanel {
 		return false;
 	}
 	
+	private int distance (int x, int y, int row, int col){
+		return Math.abs(row-y)+ Math.abs(col-x);
+	}
+	
+	public Point nearest (int row, int col){
+		Point nearest = new Point();
+		int distance = Integer.MAX_VALUE;
+		for (int i = 0; i < cells.length; i++){
+			for (int j = 0; j < cells[0].length; j++){
+				if (cells[i][j] == CellState.DIRTY){
+					if (distance (i, j, row, col) < distance ){
+						distance = distance (i, j, row, col);
+						nearest.x = i;
+						nearest.y = j;
+					}
+				}
+			}
+		}
+		return nearest;
+	}
+	
 	/****************************************************
 	 *               Getters and Setters                *
 	 ****************************************************/

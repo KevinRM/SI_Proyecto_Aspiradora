@@ -84,16 +84,16 @@ public class Vacuum {
 		switch (movement) {
 		case UP: 
 			nrow--;
-		break;
+			break;
 		case DOWN: 
 			nrow++;
-		break;
+			break;
 		case LEFT: 
 			ncol--;
-		break;
+			break;
 		case RIGHT:	
 			ncol++;
-		break;
+			break;
 		default:
 			break;
 		}
@@ -103,7 +103,10 @@ public class Vacuum {
 
 	public boolean clean () {
 		VacuumMovement direction = VacuumMovement.UP;
-		applyObstacleSensor(nrow, ncol, sensorRange);  //Exploración Inicial
+		boolean sensing = true;
+		while(sensing){
+			sensing = applyObstacleSensor(nrow, ncol, sensorRange);
+		}  //Exploración Inicial
 		while (internalMap.dirtyAreas()){
 			while (dirtyNeighbor()){
 				if (unexploreNeighbor()){
@@ -111,16 +114,22 @@ public class Vacuum {
 				} else {
 					if (isPosibleToMove (direction)){
 						move(direction);
+						internalMap.repaint();
+						realMap.repaint();
 					} else {
 						direction = direction.getNextDirection();
 					}
 				}
 			}
-
-			//localizar siguiente zona sucia más cercana
-			//desplazar el robot a ella
+			if (internalMap.dirtyAreas()){
+				Point point = internalMap.nearest(nrow, ncol);
+				//movimiento en un solo paso, falta desplazar
+				nrow = point.y;
+				ncol = point.x;
+			}
 
 		}
+		System.out.println("salgo");
 
 		return true;
 	}
@@ -134,7 +143,7 @@ public class Vacuum {
 	/**
 	 * Applies a sensor operation so that the agent can see what elements are within its sensor range.
 	 */
-	public void applyObstacleSensor(int pixelRowStart, int pixelColStart, int cellSpace) {
+	public boolean applyObstacleSensor(int pixelRowStart, int pixelColStart, int cellSpace) {
 		timerSensor = new Timer(50, new ActionListener () {
 			public void actionPerformed(ActionEvent e) {
 				boolean isEnd = false;
@@ -253,6 +262,8 @@ public class Vacuum {
 			}
 		});
 		getTimerSensor().start();
+		
+		return false;
 	}
 
 	/****************************************************

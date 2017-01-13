@@ -115,7 +115,9 @@ public class AppController {
 						displayWrongValueForSensorRange();
 					} else {
 						getVacuum().setSensorRange(sensorRange);
-						getVacuum().applyObstacleSensor(getRealMap().getPixelRowStart(), getRealMap().getPixelColStart(), getRealMap().getCellSpace());
+						
+						//getVacuum().applyObstacleSensor(getRealMap().getPixelRowStart(), getRealMap().getPixelColStart(), getRealMap().getCellSpace());
+						getVacuum().clean();
 						// TO-DO comenzar la simulación
 						// Debería comprobarse también que la aspiradora esté colocada
 					}
