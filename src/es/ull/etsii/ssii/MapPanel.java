@@ -17,7 +17,7 @@ public class MapPanel extends JPanel {
 	
 	private int nrows;
 	private int ncols;
-	private CellState[][] cells;
+	public CellState[][] cells;
 	private Color vacuumColor;
 	private boolean vacuumSet;
 	
@@ -319,11 +319,11 @@ public class MapPanel extends JPanel {
 		int distance = Integer.MAX_VALUE;
 		for (int i = 0; i < cells.length; i++){
 			for (int j = 0; j < cells[0].length; j++){
-				if (cells[i][j] == CellState.DIRTY){
-					if (distance (i, j, row, col) < distance ){
-						distance = distance (i, j, row, col);
-						nearest.x = i;
-						nearest.y = j;
+				if (cells[j][i] == CellState.DIRTY){
+					if (distance (j, i, row, col) < distance ){
+						distance = distance (j, i, row, col);
+						nearest.x = j;
+						nearest.y = i;
 					}
 				}
 			}

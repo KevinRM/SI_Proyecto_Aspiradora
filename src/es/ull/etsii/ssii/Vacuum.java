@@ -34,6 +34,8 @@ public class Vacuum {
 	public int sectorExplore = 0;
 	public boolean collisionSensorWithObstacle = false;
 	public ArrayList<Integer[]> obstaclesDetected = new ArrayList<Integer[]>();
+	private boolean firsCall = true;
+	VacuumMovement direction;
 
 	Vacuum(RealMap aRealMap, InternalMap anInternalMap) {
 		nrow = -1;
@@ -46,25 +48,11 @@ public class Vacuum {
 	}
 
 	public boolean dirtyNeighbor () {
-		for (int i = -1; i <= 1; i += 2){
-			for (int j = -1; i <= 1; i += 2){
-				if (internalMap.isDirty(i+nrow, j+ncol)){
-					return true;
-				}
-			}
-		}
-		return false;
+		return internalMap.isDirty(nrow-1, ncol) || internalMap.isDirty(nrow+1, ncol) || internalMap.isDirty(nrow, ncol-1) || internalMap.isDirty(nrow, ncol+1);
 	}
 
 	public boolean unexploreNeighbor () {
-		for (int i = -1; i <= 1; i += 2){
-			for (int j = -1; i <= 1; i += 2){
-				if (internalMap.isUnknown(i+nrow, j+ncol)){
-					return true;
-				}
-			}
-		}
-		return false;
+		return internalMap.isUnknown(nrow-1, ncol) || internalMap.isUnknown(nrow+1, ncol) || internalMap.isUnknown(nrow, ncol-1) || internalMap.isUnknown(nrow, ncol+1);
 	}
 
 	public boolean isPosibleToMove (VacuumMovement movement){
@@ -101,35 +89,68 @@ public class Vacuum {
 		realMap.setVacuumAtPos(nrow, ncol);
 	}
 
-	public boolean clean () {
-		VacuumMovement direction = VacuumMovement.UP;
-		boolean sensing = true;
-		while(sensing){
-			sensing = applyObstacleSensor(nrow, ncol, sensorRange);
-		}  //Exploración Inicial
-		while (internalMap.dirtyAreas()){
-			while (dirtyNeighbor()){
-				if (unexploreNeighbor()){
-					applyObstacleSensor(nrow, ncol, sensorRange);
-				} else {
-					if (isPosibleToMove (direction)){
-						move(direction);
-						internalMap.repaint();
-						realMap.repaint();
-					} else {
-						direction = direction.getNextDirection();
-					}
+	public void fastSensing (){
+		for (int i = nrow-sensorRange; i < nrow+sensorRange; i++){
+			for (int j = ncol-sensorRange; j < ncol+sensorRange; j++){
+				CellState aux = realMap.cells[i][j];
+				switch (aux) {
+				case DIRTY: internalMap.setDirtyCell(i, j);
+				break;
+				case CLEAN: internalMap.setCleanCell(i, j);
+				break;
+				case OBSTACLE: internalMap.setObstacleAtPos(i, j);
+				break;
+				case VACUUM: internalMap.setVacuumAtPos(i, j);
+				break;
+				default: 
+					break;
 				}
-			}
-			if (internalMap.dirtyAreas()){
-				Point point = internalMap.nearest(nrow, ncol);
-				//movimiento en un solo paso, falta desplazar
-				nrow = point.y;
-				ncol = point.x;
-			}
 
+			}
 		}
-		System.out.println("salgo");
+	}
+
+	public boolean clean () {
+		if (firsCall){
+			direction = VacuumMovement.UP;
+			fastSensing();
+			firsCall = false;
+		}
+		boolean sensing = true;
+
+		//while(sensing){
+		//	sensing = applyObstacleSensor(nrow, ncol, sensorRange);
+		//}  //Exploración Inicial
+		//while (internalMap.dirtyAreas()){
+		//while (dirtyNeighbor()){
+		if (unexploreNeighbor()){
+			fastSensing();
+			//applyObstacleSensor(nrow, ncol, sensorRange);
+		} else {
+			if (isPosibleToMove (direction)){
+				move(direction);
+				//internalMap.repaint();
+				//realMap.repaint();
+			} else {
+				direction = direction.getNextDirection();
+			}
+		}
+		//}
+		if (internalMap.dirtyAreas() && !dirtyNeighbor() && !unexploreNeighbor() ){
+			internalMap.setCleanCell(nrow, ncol);
+			realMap.setCleanCell(nrow, ncol);
+			Point point = internalMap.nearest(nrow, ncol);
+			//movimiento en un solo paso, falta desplazar
+			nrow = point.x;
+			ncol = point.y;
+			System.out.println("" + point.y + "--" + point.x);
+			internalMap.setVacuumAtPos(nrow, ncol);
+			realMap.setVacuumAtPos(nrow, ncol);
+		}
+
+		//}
+
+		internalMap.repaint();
 
 		return true;
 	}
@@ -262,7 +283,7 @@ public class Vacuum {
 			}
 		});
 		getTimerSensor().start();
-		
+
 		return false;
 	}
 

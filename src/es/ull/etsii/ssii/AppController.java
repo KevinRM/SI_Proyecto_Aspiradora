@@ -118,6 +118,7 @@ public class AppController {
 						
 						//getVacuum().applyObstacleSensor(getRealMap().getPixelRowStart(), getRealMap().getPixelColStart(), getRealMap().getCellSpace());
 						getVacuum().clean();
+						realMap.repaint();
 						// TO-DO comenzar la simulación
 						// Debería comprobarse también que la aspiradora esté colocada
 					}
