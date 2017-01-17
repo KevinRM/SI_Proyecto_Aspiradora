@@ -115,18 +115,15 @@ public class Vacuum {
 	public boolean clean () {
 		if (firsCall){
 			direction = VacuumMovement.UP;
-			fastSensing();
+			//fastSensing();
+			applyObstacleSensor(nrow, ncol, sensorRange);
 			firsCall = false;
 		}
-		//boolean sensing = true;
-
-		//while(sensing){
-		//	sensing = applyObstacleSensor(nrow, ncol, sensorRange);
-		//}  //Exploración Inicial
 		//while (internalMap.dirtyAreas()){
 		//while (dirtyNeighbor()){
 		if (unexploreNeighbor()){
-			fastSensing();
+		  applyObstacleSensor(nrow, ncol, sensorRange);
+			//fastSensing();
 			//applyObstacleSensor(nrow, ncol, sensorRange);
 		} else {
 			if (isPosibleToMove (direction)){
@@ -177,9 +174,9 @@ public class Vacuum {
 	/**
 	 * Applies a sensor operation so that the agent can see what elements are within its sensor range.
 	 */
-	public boolean applyObstacleSensor(int pixelRowStart, int pixelColStart, int cellSpace) {
-		timerSensor = new Timer(50, new ActionListener () {
-			public void actionPerformed(ActionEvent e) {
+	public void applyObstacleSensor(int pixelRowStart, int pixelColStart, int cellSpace) {
+	//	timerSensor = new Timer(50, new ActionListener () {
+		//	public void actionPerformed(ActionEvent e) {
 				boolean isEnd = false;
 				switch (getSectorToExplore()) {
 				case 0: {
@@ -293,11 +290,11 @@ public class Vacuum {
 				} else {
 					getRealMap().drawLineSensor(true, 0, 0, 0, 0);
 				}
-			}
-		});
-		getTimerSensor().start();
+		//	}
+	//	});
+		//getTimerSensor().start();
 
-		return false;
+	//	return false;
 	}
 
 	/****************************************************
