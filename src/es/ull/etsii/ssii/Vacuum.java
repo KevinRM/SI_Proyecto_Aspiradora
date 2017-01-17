@@ -112,7 +112,6 @@ public class Vacuum {
 			}
 		}
 	}
-
 	public boolean clean () {
 		if (firsCall){
 			direction = VacuumMovement.UP;
