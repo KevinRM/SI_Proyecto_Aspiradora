@@ -310,20 +310,20 @@ public class MapPanel extends JPanel {
 		return false;
 	}
 	
-	private int distance (int x, int y, int row, int col){
+	private int distance (int y, int x, int row, int col){
 		return Math.abs(row-y)+ Math.abs(col-x);
 	}
-	
+
 	public Point nearest (int row, int col){
 		Point nearest = new Point();
 		int distance = Integer.MAX_VALUE;
-		for (int i = 0; i < cells.length; i++){
-			for (int j = 0; j < cells[0].length; j++){
+		for (int i = 0; i < cells[0].length; i++){
+			for (int j = 0; j < cells.length; j++){
 				if (cells[j][i] == CellState.DIRTY){
-					if (distance (j, i, row, col) < distance ){
+					if (distance (j, i, row, col) < distance  && distance (j, i, row, col) > 0){
 						distance = distance (j, i, row, col);
-						nearest.x = j;
-						nearest.y = i;
+						nearest.x = i;
+						nearest.y = j;
 					}
 				}
 			}

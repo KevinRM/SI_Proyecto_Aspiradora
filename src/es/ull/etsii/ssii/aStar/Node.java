@@ -3,8 +3,8 @@ package es.ull.etsii.ssii.aStar;
 public class Node implements Comparable <Node> {
 	int realCost;
 	int stimatedCost;
-	int xCoord;
-	int yCoord;
+	public int xCoord;
+	public int yCoord;
 	Node prev = null;
 	boolean isStart = false;
 	boolean isFinish = false;

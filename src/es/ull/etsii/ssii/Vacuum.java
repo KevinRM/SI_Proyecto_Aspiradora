@@ -9,6 +9,9 @@ import java.util.ArrayList;
 
 import javax.swing.Timer;
 
+import es.ull.etsii.ssii.aStar.AStar;
+import es.ull.etsii.ssii.aStar.Node;
+
 public class Vacuum {
 	private static final int DEFAULT_ANIMATION_TIME = 1000;
 	private static final int DEFAULT_SENSOR_RANGE = 3;
@@ -116,7 +119,7 @@ public class Vacuum {
 			fastSensing();
 			firsCall = false;
 		}
-		boolean sensing = true;
+		//boolean sensing = true;
 
 		//while(sensing){
 		//	sensing = applyObstacleSensor(nrow, ncol, sensorRange);
@@ -136,14 +139,25 @@ public class Vacuum {
 			}
 		}
 		//}
+		internalMap.repaint();
+		realMap.repaint();
 		if (internalMap.dirtyAreas() && !dirtyNeighbor() && !unexploreNeighbor() ){
+			Point point = internalMap.nearest(nrow, ncol);
+			AStar aStar = new AStar(internalMap, point);
+			ArrayList <Node> camino = aStar.run();
 			internalMap.setCleanCell(nrow, ncol);
 			realMap.setCleanCell(nrow, ncol);
-			Point point = internalMap.nearest(nrow, ncol);
 			//movimiento en un solo paso, falta desplazar
-			nrow = point.x;
-			ncol = point.y;
-			System.out.println("" + point.y + "--" + point.x);
+			//nrow = point.x;
+			//ncol = point.y;
+			System.out.println("origen" + nrow + "--" + ncol);
+			System.out.println("objetivo" + point.y + "--" + point.x);
+			for (int i = camino.size()-1; i>= 0; i--){
+				nrow = camino.get(i).yCoord;
+				ncol = camino.get(i).xCoord;
+				System.out.println("Camino" + camino.get(i).yCoord + "--" + camino.get(i).xCoord);
+			}
+			
 			internalMap.setVacuumAtPos(nrow, ncol);
 			realMap.setVacuumAtPos(nrow, ncol);
 		}

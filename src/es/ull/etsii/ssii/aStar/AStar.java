@@ -17,6 +17,7 @@ public class AStar {
 	public AStar (InternalMap map, Point finish){
 		openList = new ArrayList<Node>();
 		closeList = new ArrayList<Node>();
+		this.map = new Node [map.getnCols()][map.getnRows()];
 		for (int i = 0; i < map.getnCols(); i++){
 			for (int j = 0; j < map.getnRows(); j++){
 				if (map.isClean(j, i)){
@@ -38,7 +39,7 @@ public class AStar {
 	private ArrayList <Node> RecCamino(Node last){
 	  ArrayList <Node> aux = new ArrayList <Node>();
 	  Node actual = last;
-	  while (actual.prev == null){
+	  while (actual.prev != null){
 	    aux.add(actual);
 	    actual = actual.prev;
 	  }
@@ -46,7 +47,7 @@ public class AStar {
 	  
 	}
 	
-	private Node run() {
+	public ArrayList <Node> run() {
 		Node actual;
 		start.realCost = 0;
 		start.stimatedCost = g(start);
@@ -56,7 +57,7 @@ public class AStar {
 			actual = openList.get(0);
 			openList.remove(0);
 			if (actual.isFinish){
-				return actual;
+				return  RecCamino(actual);
 			} else {
 				closeList.add(actual);
 				int acRealCost = actual.realCost+1;
@@ -81,16 +82,16 @@ public class AStar {
 	
 	private ArrayList <Node> adjacent(Node o){
     ArrayList<Node> aux = new ArrayList <Node>();
-    if (!up(o).isOpaque || closeList.contains(up(o))){
+    if (!up(o).isOpaque && !closeList.contains(up(o))){
       aux.add(up(o));
     }
-    if (!down(o).isOpaque  || closeList.contains(down(o))){
+    if (!down(o).isOpaque  && !closeList.contains(down(o))){
       aux.add(down(o));
     }
-    if (!left(o).isOpaque  || closeList.contains(left(o))){
+    if (!left(o).isOpaque  && !closeList.contains(left(o))){
       aux.add(left(o));
     }
-    if (!right(o).isOpaque  || closeList.contains(right(o))){
+    if (!right(o).isOpaque && !closeList.contains(right(o))){
       aux.add(right(o));
     }
     
