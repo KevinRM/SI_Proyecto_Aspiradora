@@ -152,6 +152,9 @@ public class ControlPanel extends JPanel {
 		eraseObjectRadioButton = new JRadioButton("Erase object");
 		vacuumColor = new JComboBox(VACUUM_COLORS);
 		speedSlider = new JSlider();
+		speedSlider.setMaximum(1000);
+		speedSlider.setMinimum(10);
+		speedSlider.setValue(500);
 		startButton = new JButton("START");
 		resetButton = new JButton("RESET");
 

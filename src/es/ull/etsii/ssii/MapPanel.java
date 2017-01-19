@@ -218,7 +218,6 @@ public class MapPanel extends JPanel {
 	public boolean setVacuumAtPos(int row, int col) {
 		if (!isVacuumSet()) {
 			getCells()[row][col] = CellState.VACUUM;
-			//vacuumPos = new Point (col, row);
 			setVacuumSet(true);
 			return true;
 		} else {

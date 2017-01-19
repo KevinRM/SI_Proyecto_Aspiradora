@@ -38,7 +38,7 @@ public class Vacuum {
   public ArrayList<Integer[]> obstaclesDetected = new ArrayList<Integer[]>();
   private boolean firsCall = true;
   VacuumMovement direction;
-  private ArrayList <Node> camino;
+  private ArrayList <Node> path;
   private int camIndex;
 
   Vacuum(RealMap aRealMap, InternalMap anInternalMap) {
@@ -116,8 +116,8 @@ public class Vacuum {
       } else if (internalMap.dirtyAreas()) {
         Point point = internalMap.nearest(nrow, ncol);
         AStar aStar = new AStar(internalMap, point);
-        camino = aStar.run();
-        camIndex = camino.size()-1;
+        path = aStar.run();
+        camIndex = path.size()-1;
         return AlgAction.MOVE;
       } else {
         return AlgAction.FINISH;
@@ -125,11 +125,10 @@ public class Vacuum {
     case MOVE:
       internalMap.setCleanCell(nrow, ncol);
       realMap.setCleanCell(nrow, ncol);
-      nrow = camino.get(camIndex).yCoord;
-      ncol = camino.get(camIndex).xCoord;
+      nrow = path.get(camIndex).yCoord;
+      ncol = path.get(camIndex).xCoord;
       internalMap.setVacuumAtPos(nrow, ncol);
       realMap.setVacuumAtPos(nrow, ncol);
-      System.out.println(camIndex);
       camIndex--;
       if (camIndex >= 0){
         return AlgAction.MOVE;
