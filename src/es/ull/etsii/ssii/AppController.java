@@ -45,10 +45,6 @@ public class AppController {
 		initializeGUIComponentsHandlers();
 	}
 
-	public void initializeVacuumCleaner() {
-
-	}
-
 	private void initializeGUIComponentsHandlers() {
 
 		/**
@@ -191,11 +187,12 @@ public class AppController {
 		getControlPanel().getResetButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//StopSimulation
+				//Stop simulation
 				algTimer.stop();
 				getControlPanel().getStartButton().setText("START");
 				isPaused = false;
 				isRunning = false;
+				
 				// Reset the maps
 				int currentnRows = getRealMap().getnRows();
 				int currentnCols = getRealMap().getnCols();
@@ -203,6 +200,12 @@ public class AppController {
 				getControlPanel().getInternalMap().resizeMap(currentnRows, currentnCols);
 				getRealMap().repaint();
 				getControlPanel().getInternalMap().repaint();
+				
+				// Setting color for vacuum cleaner
+				String newVacuumColor = 
+						String.valueOf(getControlPanel().getVacuumColor().getSelectedItem());
+				getRealMap().changeVacuumColor(newVacuumColor);
+				getRealMap().repaint();
 			}
 		});
 

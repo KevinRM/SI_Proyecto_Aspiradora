@@ -156,132 +156,128 @@ public class Vacuum {
    */
   public AlgAction applyObstacleSensor() {
     //timerSensor = new Timer(50, new ActionListener () {
-    //	public void actionPerformed(ActionEvent e) {
-    boolean isEnd = false;
-    switch (getSectorToExplore()) {
-    case 0: {
-      if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
-        setYToModifyOriginSensor(0);
-        if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
-          setXToModifyOriginSensor(0);
-          setSectorToExplore(1);
-        } else {
-          setXToModifyOriginSensor(getXToModifyOriginSensor() - 1);
-        }
-      } else {
-        setYToModifyOriginSensor(getYToModifyOriginSensor() - 1);
-      }
-    } break;
-    case 1: {
-      if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
-        setYToModifyOriginSensor(1);
-        if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
-          setXToModifyOriginSensor(1);
-          setYToModifyOriginSensor(0);
-          setSectorToExplore(2);
-        } else {
-          setXToModifyOriginSensor(getXToModifyOriginSensor() - 1);
-        }
-      } else {
-        setYToModifyOriginSensor(getYToModifyOriginSensor() + 1);
-      }
-    } break;
-    case 2: {
-      if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
-        setYToModifyOriginSensor(0);
-        if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
-          setXToModifyOriginSensor(1);
-          setYToModifyOriginSensor(-1);
-          setSectorToExplore(3);
-        } else {
-          setXToModifyOriginSensor(getXToModifyOriginSensor() + 1);
-        }
-      } else {
-        setYToModifyOriginSensor(getYToModifyOriginSensor() + 1);
-      }
-    } break;
-    case 3: {
-      if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
-        setYToModifyOriginSensor(-1);
-        if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
-          setXToModifyOriginSensor(0);
-          setYToModifyOriginSensor(0);
-          setSectorToExplore(4);
-          getObstaclesDetected().clear();
-        } else {
-          setXToModifyOriginSensor(getXToModifyOriginSensor() + 1);
-        }
-      } else {
-        setYToModifyOriginSensor(getYToModifyOriginSensor() - 1);
-      }
-    } break;
-    case 4: {
-      setSectorToExplore(0);
-      isEnd = true;
-      
-      //getTimerSensor().stop();
-    } 
-    break;
-    }
-
-    if (!isEnd) {
-      int xPosOriginSensor = (getRealMap().getPixelColStart() + getnCol() * getRealMap().getCellSpace()) + getRealMap().getCellSpace() / 2;
-      int yPosOriginSensor = (getRealMap().getPixelRowStart() + getnRow() * getRealMap().getCellSpace()) + getRealMap().getCellSpace() / 2;
-      int xPosDestinySensor = xPosOriginSensor + (getYToModifyOriginSensor() * getRealMap().getCellSpace());
-      int yPosDestinySensor = yPosOriginSensor + (getXToModifyOriginSensor() * getRealMap().getCellSpace());
-      int rowDestiny = getnRow() + getXToModifyOriginSensor();
-      int colDestiny = getnCol() + getYToModifyOriginSensor();
-
-      if (rowDestiny >= 0 && rowDestiny < getRealMap().getNrows() && colDestiny >= 0 && colDestiny < getRealMap().getNcols()) {
-        getRealMap().drawLineSensor(false, xPosOriginSensor, yPosOriginSensor, xPosDestinySensor, yPosDestinySensor);
-
-        BufferedImage image = new BufferedImage(getRealMap().getWidth(), getRealMap().getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
-        Graphics2D g2 = image.createGraphics();
-        getRealMap().paint(g2);
-
-        for (int i = 0; i < getObstaclesDetected().size(); i++) {
-          Integer[] obstacle = getObstaclesDetected().get(i);
-
-          for (int j = 0; j < getRealMap().getCellSpace(); j++) {
-            for (int k = 0; k < getRealMap().getCellSpace(); k++) {		
-              int xPixel = (getRealMap().getPixelColStart() + k) + obstacle[1] * getRealMap().getCellSpace();
-              int yPixel = (getRealMap().getPixelRowStart() + j) + obstacle[0] * getRealMap().getCellSpace();
-              int color = image.getRGB(xPixel, yPixel);
-              if (((color & 0x00ff0000) >> 16) == 255) {	// Detect RED of sensor
-                setSensorCollisionObstacle(true);
-              }
-            }
-          }
-        }
-        g2.dispose();
-
-        int xPosCellExplore = getnRow() + getXToModifyOriginSensor();
-        int yPosCellExplore = getnCol() + getYToModifyOriginSensor();
-
-        if (getSensorCollisionObstacle()) {
-          setSensorCollisionObstacle(false);
-
-        } else if (getRealMap().isObstacle(xPosCellExplore, yPosCellExplore)) {
-          getObstaclesDetected().add(new Integer[]{xPosCellExplore, yPosCellExplore});
-          getInternalMap().setObstacleAtPos(xPosCellExplore, yPosCellExplore);
-
-        } else if (getXToModifyOriginSensor() != 0 || getYToModifyOriginSensor() != 0) {
-          if (getInternalMap().isUnknown(xPosCellExplore, yPosCellExplore)){
-            getInternalMap().setDirtyCell(xPosCellExplore, yPosCellExplore);
-          }
-        }
-      }
-      return AlgAction.SENSE;
+//	public void actionPerformed(ActionEvent e) {
+boolean isEnd = false;
+switch (getSectorToExplore()) {
+case 0: {
+  if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
+    setYToModifyOriginSensor(0);
+    if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
+      setXToModifyOriginSensor(0);
+      setSectorToExplore(1);
     } else {
-      getRealMap().drawLineSensor(true, 0, 0, 0, 0);
-      return AlgAction.FINISH_SENSE;
-      
+      setXToModifyOriginSensor(getXToModifyOriginSensor() - 1);
     }
-    //}
-    //});
-    //getTimerSensor().start();
+  } else {
+    setYToModifyOriginSensor(getYToModifyOriginSensor() - 1);
+  }
+} break;
+case 1: {
+  if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
+    setYToModifyOriginSensor(1);
+    if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
+      setXToModifyOriginSensor(1);
+      setYToModifyOriginSensor(0);
+      setSectorToExplore(2);
+    } else {
+      setXToModifyOriginSensor(getXToModifyOriginSensor() - 1);
+    }
+  } else {
+    setYToModifyOriginSensor(getYToModifyOriginSensor() + 1);
+  }
+} break;
+case 2: {
+  if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
+    setYToModifyOriginSensor(0);
+    if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
+      setXToModifyOriginSensor(1);
+      setYToModifyOriginSensor(-1);
+      setSectorToExplore(3);
+    } else {
+      setXToModifyOriginSensor(getXToModifyOriginSensor() + 1);
+    }
+  } else {
+    setYToModifyOriginSensor(getYToModifyOriginSensor() + 1);
+  }
+} break;
+case 3: {
+  if (Math.abs(getYToModifyOriginSensor()) == getSensorRange()) {
+    setYToModifyOriginSensor(-1);
+    if (Math.abs(getXToModifyOriginSensor()) == getSensorRange()) {
+      setXToModifyOriginSensor(0);
+      setYToModifyOriginSensor(0);
+      setSectorToExplore(4);
+      getObstaclesDetected().clear();
+    } else {
+      setXToModifyOriginSensor(getXToModifyOriginSensor() + 1);
+    }
+  } else {
+    setYToModifyOriginSensor(getYToModifyOriginSensor() - 1);
+  }
+} break;
+case 4: {
+  setSectorToExplore(0);
+  isEnd = true;
+  
+  //getTimerSensor().stop();
+} 
+break;
+}
 
-    //	return false;
+if (!isEnd) {
+  int xPosOriginSensor = (getRealMap().getPixelColStart() + getnCol() * getRealMap().getCellSpace()) + getRealMap().getCellSpace() / 2;
+  int yPosOriginSensor = (getRealMap().getPixelRowStart() + getnRow() * getRealMap().getCellSpace()) + getRealMap().getCellSpace() / 2;
+  int xPosDestinySensor = xPosOriginSensor + (getYToModifyOriginSensor() * getRealMap().getCellSpace());
+  int yPosDestinySensor = yPosOriginSensor + (getXToModifyOriginSensor() * getRealMap().getCellSpace());
+  int rowDestiny = getnRow() + getXToModifyOriginSensor();
+  int colDestiny = getnCol() + getYToModifyOriginSensor();
+
+  if (rowDestiny >= 0 && rowDestiny < getRealMap().getNrows() && colDestiny >= 0 && colDestiny < getRealMap().getNcols()) {
+    getRealMap().drawLineSensor(false, xPosOriginSensor, yPosOriginSensor, xPosDestinySensor, yPosDestinySensor);
+
+    BufferedImage image = new BufferedImage(getRealMap().getWidth(), getRealMap().getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+    Graphics2D g2 = image.createGraphics();
+    getRealMap().paint(g2);
+
+    for (int i = 0; i < getObstaclesDetected().size(); i++) {
+      Integer[] obstacle = getObstaclesDetected().get(i);
+
+      for (int j = 0; j < getRealMap().getCellSpace(); j++) {
+        for (int k = 0; k < getRealMap().getCellSpace(); k++) {		
+          int xPixel = (getRealMap().getPixelColStart() + k) + obstacle[1] * getRealMap().getCellSpace();
+          int yPixel = (getRealMap().getPixelRowStart() + j) + obstacle[0] * getRealMap().getCellSpace();
+          int color = image.getRGB(xPixel, yPixel);
+          if (((color & 0x00ff0000) >> 16) == 255) {	// Detect RED of sensor
+            setSensorCollisionObstacle(true);
+          }
+        }
+      }
+    }
+    g2.dispose();
+
+    int xPosCellExplore = getnRow() + getXToModifyOriginSensor();
+    int yPosCellExplore = getnCol() + getYToModifyOriginSensor();
+
+    if (getSensorCollisionObstacle()) {
+      setSensorCollisionObstacle(false);
+
+    } else if (getRealMap().isObstacle(xPosCellExplore, yPosCellExplore)) {
+      getObstaclesDetected().add(new Integer[]{xPosCellExplore, yPosCellExplore});
+      getInternalMap().setObstacleAtPos(xPosCellExplore, yPosCellExplore);
+
+    } else if (getXToModifyOriginSensor() != 0 || getYToModifyOriginSensor() != 0) {
+      if (getInternalMap().isUnknown(xPosCellExplore, yPosCellExplore)){
+        getInternalMap().setDirtyCell(xPosCellExplore, yPosCellExplore);
+      }
+    }
+  }
+  	return AlgAction.SENSE;
+  
+	} else {
+		getRealMap().drawLineSensor(true, 0, 0, 0, 0);
+		return AlgAction.FINISH_SENSE;
+	}
+
   }
 
   /****************************************************
