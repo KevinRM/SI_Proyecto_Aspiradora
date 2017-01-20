@@ -108,7 +108,7 @@ public class AStar {
 	}
 	
 	private Node down (Node o){
-    if (o.yCoord < map.length-1){
+    if (o.yCoord < map[0].length-1){
       return map [o.xCoord][o.yCoord+1];
     } else {
       return null;
@@ -124,7 +124,7 @@ public class AStar {
   }
 	
 	private Node right (Node o){
-	  if (o.yCoord < map[0].length-1){
+	  if (o.xCoord < map.length-1){
       return map [o.xCoord+1][o.yCoord];
     } else {
       return null;

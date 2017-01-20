@@ -117,7 +117,7 @@ public class Vacuum {
         Point point = internalMap.nearest(nrow, ncol);
         AStar aStar = new AStar(internalMap, point);
         path = aStar.run();
-        camIndex = path.size()-1;
+        camIndex = path.size()-1;  // aqui hay un error
         return AlgAction.MOVE;
       } else {
         return AlgAction.FINISH;
