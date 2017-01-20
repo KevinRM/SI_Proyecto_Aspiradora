@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
@@ -198,6 +199,8 @@ public class AppController {
 				int currentnCols = getRealMap().getnCols();
 				getRealMap().resizeMap(currentnRows, currentnCols);
 				getControlPanel().getInternalMap().resizeMap(currentnRows, currentnCols);
+				getRealMap().drawLineSensor(true, 0, 0, 0, 0);
+				getVacuum().resetSensor();
 				getRealMap().repaint();
 				getControlPanel().getInternalMap().repaint();
 				
