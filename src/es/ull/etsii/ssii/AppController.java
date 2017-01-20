@@ -307,7 +307,7 @@ public class AppController {
 
 	private void displayVacuumNotSetMessage() {
 		JOptionPane.showMessageDialog(getControlPanel().getParent(), 
-				"There must a vacuum set on the map.", 
+				"There must be a vacuum set on the map.", 
 				"Warning", 
 				JOptionPane.INFORMATION_MESSAGE);
 	}
