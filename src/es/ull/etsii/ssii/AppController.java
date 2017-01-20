@@ -130,46 +130,52 @@ public class AppController {
 
 			public void actionPerformed(ActionEvent e) {
 				try {
-					int sensorRange = Integer.parseInt(getControlPanel().getSensorRange().getText());
-					if ((sensorRange > SENSOR_RANGE_MAX_VALUE) || sensorRange < SENSOR_RANGE_MIN_VALUE) {
-						displayWrongValueForSensorRange();
-					} else {
-
-
-						if (!isRunning){
-							isRunning = true;
-							getControlPanel().getStartButton().setText("PAUSE");
-							getVacuum().setSensorRange(sensorRange);
-							algAction = AlgAction.START;
-							algTimer = new Timer(getControlPanel().getSpeedSlider().getValue(), new ActionListener () {
-								public void actionPerformed(ActionEvent e) {
-									algAction = getVacuum().clean(algAction);
-									realMap.repaint();
-									getVacuum().getInternalMap().repaint();
-									if (algAction == AlgAction.FINISH){
-										algTimer.stop();
-										getControlPanel().getStartButton().setText("START");
-										isPaused = false;
-										isRunning = false;
-									} else if (algAction == AlgAction.SENSE){
-										algTimer.setDelay(getControlPanel().getSpeedSlider().getValue()/10);
-									} else if (algAction == AlgAction.FINISH_SENSE){
-										algTimer.setDelay(getControlPanel().getSpeedSlider().getValue());
-									}
-								}
-							});
-							algTimer.start();
-						} else if (!isPaused) {
-							isPaused = true;
-							algTimer.stop();
-							getControlPanel().getStartButton().setText("START");
+					if (getRealMap().isVacuumSet()) {
+						int sensorRange = Integer.parseInt(getControlPanel().getSensorRange().getText());
+						if ((sensorRange > SENSOR_RANGE_MAX_VALUE) || sensorRange < SENSOR_RANGE_MIN_VALUE) {
+							displayWrongValueForSensorRange();
 						} else {
-							isPaused = false;
-							algTimer.start();
-							getControlPanel().getStartButton().setText("PAUSE");
+	
+	
+							if (!isRunning){
+								isRunning = true;
+								getControlPanel().getStartButton().setText("PAUSE");
+								getVacuum().setSensorRange(sensorRange);
+								algAction = AlgAction.START;
+								algTimer = new Timer(getControlPanel().getSpeedSlider().getValue(), new ActionListener () {
+									public void actionPerformed(ActionEvent e) {
+										algAction = getVacuum().clean(algAction);
+										realMap.repaint();
+										getVacuum().getInternalMap().repaint();
+										if (algAction == AlgAction.FINISH){
+											algTimer.stop();
+											getControlPanel().getStartButton().setText("START");
+											isPaused = false;
+											isRunning = false;
+										} else if (algAction == AlgAction.SENSE){
+											algTimer.setDelay(getControlPanel().getSpeedSlider().getValue()/10);
+										} else if (algAction == AlgAction.FINISH_SENSE){
+											algTimer.setDelay(getControlPanel().getSpeedSlider().getValue());
+										}
+									}
+								});
+								algTimer.start();
+							} else if (!isPaused) {
+								isPaused = true;
+								algTimer.stop();
+								getControlPanel().getStartButton().setText("START");
+							} else {
+								isPaused = false;
+								algTimer.start();
+								getControlPanel().getStartButton().setText("PAUSE");
+							}
 						}
 					}
-
+					
+					else {
+							displayVacuumNotSetMessage();
+					}
+					
 				} catch (NumberFormatException exception) {
 					displayWrongValueForSensorRange();
 				}
@@ -296,6 +302,13 @@ public class AppController {
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
+	private void displayVacuumNotSetMessage() {
+		JOptionPane.showMessageDialog(getControlPanel().getParent(), 
+				"There must a vacuum set on the map.", 
+				"Warning", 
+				JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 	public ControlPanel getControlPanel() {
 		return controlPanel;
 	}
