@@ -24,8 +24,8 @@ public class AppController {
 	private RealMap realMap;
 	private AlgAction algAction;
 	private Timer algTimer;
-	private boolean isRunning = false;
-	private boolean isPaused = false;
+	private boolean isRunning;
+	private boolean isPaused;
 
 	/**
 	 * The vacuum cleaner is instantiated in the controller.
@@ -36,7 +36,10 @@ public class AppController {
 		controlPanel = aControlPanel;
 		realMap = aRealMap;
 		vacuumCleaner = new Vacuum(realMap, controlPanel.getInternalMap());
-
+		algTimer = null;
+		isRunning = false;
+		isPaused = false;
+		
 		controlPanel.getInternalMap().repaint();
 		realMap.repaint();
 		initializeGUIComponentsHandlers();
