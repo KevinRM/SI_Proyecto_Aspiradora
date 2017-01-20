@@ -172,7 +172,7 @@ public class ControlPanel extends JPanel {
 		applyButton.setFocusPainted(false);
 		startButton.setFocusPainted(false);
 		resetButton.setFocusPainted(false);
-		//speedSlider.setFocusPainted(false);
+		speedSlider.setInverted(true);
 	}
 
 	public void updateInternalMap(InternalMap newInternalMap) {
